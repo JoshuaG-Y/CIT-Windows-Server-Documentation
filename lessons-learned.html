@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lessons Learned - CIT Windows Server 2025 Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <header class="bg-indigo-600 text-white py-4">
+        <div class="container mx-auto px-4">
+            <a href="index.html" class="text-sm hover:underline">&larr; Back to Home</a>
+            <h1 class="text-3xl font-bold mt-2">Lessons Learned</h1>
+            <p class="text-sm">Key Takeaways, Challenges, and Insights from the Server Setup Project</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Introduction</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>This document captures the key lessons learned, challenges encountered, and valuable insights gained during the Windows Server 2025 setup project for the CIT program. The aim is to provide a reference for future projects and team members, fostering continuous improvement and knowledge sharing.</p>
+                <p>Please contribute to this section as you reflect on different phases of the project.</p>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">1. Technical Challenges & Solutions</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-4">
+                <div>
+                    <h4 class="font-semibold text-lg">a. Initial OS Installation & Drivers:</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Date(s) Encountered: [e.g., April 2025]</p>
+                    <p><strong>Challenge:</strong> [Describe the challenge, e.g., "Difficulty finding compatible network drivers for the specific CIT hardware motherboard on Windows Server 2025." or "Unexpected disk partitioning errors during OS setup."]</p>
+                    <p><strong>Solution/Workaround:</strong> [Describe how it was resolved, e.g., "Located drivers from the chipset manufacturer's site for a similar server OS version which worked." or "Had to manually clear old RAID configuration in BIOS before partitioning."]</p>
+                    <p><strong>Lesson Learned:</strong> [What was the key takeaway? e.g., "Always verify hardware compatibility and pre-download essential drivers before starting OS installation, especially for newer server OS versions." or "Thoroughly check BIOS/UEFI settings for pre-existing disk configurations."]</p>
+                </div>
+                <hr class="dark:border-gray-700">
+                <div>
+                    <h4 class="font-semibold text-lg">b. Network Configuration & VIP Integration:</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Date(s) Encountered: [e.g., April-May 2025]</p>
+                    <p><strong>Challenge:</strong> [e.g., "Delays in getting the Virtual IP and NAT/PAT rules configured by School IT due to communication gaps." or "Troubleshooting why drhscit.org was not resolving correctly externally."]</p>
+                    <p><strong>Solution/Workaround:</strong> [e.g., "Established a single point of contact with School IT and scheduled regular check-ins." or "Used external DNS lookup tools to trace resolution and identified a misconfigured A record."]</p>
+                    <p><strong>Lesson Learned:</strong> [e.g., "Proactive and clear communication with external dependencies (like School IT) is crucial. Document requirements clearly and follow up." or "Understanding DNS propagation and having access to diagnostic tools is vital for external access issues."]</p>
+                </div>
+                <hr class="dark:border-gray-700">
+                <div>
+                    <h4 class="font-semibold text-lg">c. Application Deployment & Dependencies:</h4>
+                     <p class="text-sm text-gray-500 dark:text-gray-400">Date(s) Encountered: [e.g., May 2025]</p>
+                    <p><strong>Challenge:</strong> [e.g., "The proof-of-concept application had specific .NET Framework version requirements that conflicted with other components initially." or "SQL Server connection string issues from the web application."]</p>
+                    <p><strong>Solution/Workaround:</strong> [e.g., "Created a separate IIS Application Pool with the required .NET CLR version." or "Ensured TCP/IP was enabled in SQL Server Configuration Manager and the firewall rule for SQL Server port was correct. Verified user permissions in SQL."]</p>
+                    <p><strong>Lesson Learned:</strong> [e.g., "Thoroughly document application prerequisites and dependencies. Isolate application environments using AppPools." or "Systematically check connectivity paths: application config -> server firewall -> SQL Server network config -> SQL Server authentication/authorization."]</p>
+                </div>
+                <!-- Add more technical challenge sections as needed -->
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">2. Project Management & Team Collaboration</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-4">
+                <div>
+                    <h4 class="font-semibold text-lg">a. Task Allocation & Tracking:</h4>
+                    <p><strong>Observation/Challenge:</strong> [e.g., "Initial difficulty in evenly distributing tasks or tracking progress on parallel activities."]</p>
+                    <p><strong>Approach/Improvement:</strong> [e.g., "Implemented a shared task board (e.g., Trello, GitHub Projects) and held brief daily/weekly stand-ups."]</p>
+                    <p><strong>Lesson Learned:</strong> [e.g., "Visual task management tools greatly improve transparency and accountability within the team."]</p>
+                </div>
+                <hr class="dark:border-gray-700">
+                <div>
+                    <h4 class="font-semibold text-lg">b. Documentation:</h4>
+                    <p><strong>Observation/Challenge:</strong> [e.g., "Ensuring documentation was updated concurrently with the setup process rather than as an afterthought."]</p>
+                    <p><strong>Approach/Improvement:</strong> [e.g., "Assigned documentation updates as part of each major task. Used a collaborative platform (GitHub) for versioning."]</p>
+                    <p><strong>Lesson Learned:</strong> [e.g., "Treat documentation as an integral part of the project lifecycle. Real-time updates are more accurate and less burdensome."]</p>
+                </div>
+                <!-- Add more project management sections as needed -->
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">3. Communication (Internal & External)</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-4">
+                <div>
+                    <h4 class="font-semibold text-lg">a. With School IT:</h4>
+                    <p><strong>Observation/Challenge:</strong> [e.g., "Misunderstanding of technical requirements for the VIP setup initially."]</p>
+                    <p><strong>Approach/Improvement:</strong> [e.g., "Prepared a concise requirements document with diagrams and specific technical terms before meeting with School IT."]</p>
+                    <p><strong>Lesson Learned:</strong> [e.g., "Clear, documented communication is key when dealing with external technical teams. Avoid assumptions."]</p>
+                </div>
+                <!-- Add more communication sections as needed -->
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">4. Positive Outcomes & Successes</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <ul class="list-disc list-inside ml-4">
+                    <li>[e.g., "Successfully deployed the first Windows Server for the CIT program, providing a valuable new resource."]</li>
+                    <li>[e.g., "Team members gained significant hands-on experience with Windows Server administration, IIS, and SQL Server."]</li>
+                    <li>[e.g., "Developed a comprehensive documentation suite that will benefit future students and projects."]</li>
+                    <li>[e.g., "Effective collaboration and problem-solving within the team led to overcoming several technical hurdles."]</li>
+                    <!-- Add more positive outcomes -->
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">5. Recommendations for Future Projects</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <ul class="list-disc list-inside ml-4">
+                    <li>[e.g., "Allocate dedicated time for hardware compatibility research and driver acquisition before OS installation."]</li>
+                    <li>[e.g., "Establish clear communication channels and points of contact with any external dependencies (like School IT) at the project outset."]</li>
+                    <li>[e.g., "Continue the practice of maintaining detailed, living documentation throughout the project lifecycle."]</li>
+                    <li>[e.g., "Consider implementing automated configuration checks or scripts for repetitive setup tasks in future server deployments."]</li>
+                    <!-- Add more recommendations -->
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-10">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; <span id="year"></span> CIT Documentation Team. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

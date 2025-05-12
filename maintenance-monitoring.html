@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maintenance & Monitoring - CIT Windows Server 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <header class="bg-teal-600 text-white py-4">
+        <div class="container mx-auto px-4">
+            <a href="index.html" class="text-sm hover:underline">&larr; Back to Home</a>
+            <h1 class="text-3xl font-bold mt-2">Maintenance & Monitoring Plan</h1>
+            <p class="text-sm">Routine Tasks for Server Upkeep and Performance Monitoring</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">1. Introduction & Purpose</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>This document outlines the routine maintenance and monitoring procedures for the CIT Windows Server 2025. Proactive maintenance and vigilant monitoring are essential for ensuring the server's stability, security, performance, and availability.</p>
+                <p>The goal is to prevent issues before they occur, detect problems early, and ensure the server continues to meet the needs of the CIT program.</p>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">2. Routine Maintenance Tasks</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-4">
+                <div>
+                    <h4 class="font-semibold text-lg">a. Daily Tasks:</h4>
+                    <ul class="list-disc list-inside ml-4">
+                        <li><strong>Check Backup Status:</strong> Verify that all scheduled backups (OS, SQL, Application Data) completed successfully. Review backup logs for errors. (Refer to <a>backup-recovery.html</a>).</li>
+                        <li><strong>Review Key Event Logs:</strong> Briefly scan System, Application, and Security event logs for critical errors or warnings. Pay attention to logon failures, application crashes, disk errors.</li>
+                        <li><strong>Check Server Responsiveness:</strong> Basic check to ensure the server and key applications (e.g., hosted website) are responding.</li>
+                        <li><strong>Monitor Disk Space:</strong> Quick check on free disk space on all critical volumes (OS, Data, Logs, Backups).</li>
+                    </ul>
+                </div>
+                <hr class="dark:border-gray-700">
+                <div>
+                    <h4 class="font-semibold text-lg">b. Weekly Tasks:</h4>
+                    <ul class="list-disc list-inside ml-4">
+                        <li><strong>Windows Updates:</strong> Check for and approve/schedule installation of pending Windows Updates. Reboot if necessary during a planned maintenance window.</li>
+                        <li><strong>Antivirus/Anti-malware Scan & Updates:</strong> Ensure Windows Defender (or other AV) definitions are up-to-date. Review scan logs. Consider a full scan if not scheduled automatically.</li>
+                        <li><strong>Review Performance Baselines:</strong> Compare current key performance metrics (CPU, Memory, Disk I/O, Network) against established baselines. Investigate significant deviations.</li>
+                        <li><strong>Check Application-Specific Logs:</strong> Review logs for IIS, SQL Server, and any critical hosted applications for errors or unusual activity.</li>
+                        <li><strong>Test User Account Access (Spot Check):</strong> Verify a test user account can log in and access necessary resources (if applicable).</li>
+                        <li><strong>Review Security Audit Logs:</strong> More in-depth review of security logs for suspicious activities, unauthorized access attempts, or policy violations.</li>
+                    </ul>
+                </div>
+                <hr class="dark:border-gray-700">
+                <div>
+                    <h4 class="font-semibold text-lg">c. Monthly Tasks:</h4>
+                    <ul class="list-disc list-inside ml-4">
+                        <li><strong>SQL Server Maintenance:</strong>
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Check database integrity (<code>DBCC CHECKDB</code>).</li>
+                                <li>Update index statistics.</li>
+                                <li>Reorganize/rebuild indexes as needed.</li>
+                                <li>Review SQL Server error logs in detail.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Review and Archive Old Logs:</strong> Archive or clear older event logs and application logs as per retention policy to free up space and improve performance.</li>
+                        <li><strong>Disk Cleanup:</strong> Run Disk Cleanup utility or manually remove temporary files, old update files, etc.</li>
+                        <li><strong>Review User Accounts & Permissions:</strong> Audit user accounts, group memberships, and permissions. Remove or disable unused accounts. Ensure principle of least privilege is maintained.</li>
+                        <li><strong>Test Backup Restoration:</strong> Perform a test restore of a small, non-critical file or database to verify backup integrity (as per <code>backup-recovery.html</code>).</li>
+                        <li><strong>Review Server Documentation:</strong> Ensure server documentation (including this plan) is up-to-date with any changes.</li>
+                    </ul>
+                </div>
+                <hr class="dark:border-gray-700">
+                <div>
+                    <h4 class="font-semibold text-lg">d. As Needed / Ad-hoc Tasks:</h4>
+                    <ul class="list-disc list-inside ml-4">
+                        <li>Install software patches for third-party applications.</li>
+                        <li>Apply security hotfixes.</li>
+                        <li>Troubleshoot reported issues.</li>
+                        <li>Perform hardware maintenance or upgrades (if applicable, with proper planning).</li>
+                        <li>Respond to security incidents.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">3. Monitoring</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-4">
+                <div>
+                    <h4 class="font-semibold text-lg">a. Key Areas to Monitor:</h4>
+                    <ul class="list-disc list-inside ml-4">
+                        <li><strong>Performance:</strong>
+                            <ul class="list-circle list-inside ml-6">
+                                <li>CPU Utilization (% Processor Time)</li>
+                                <li>Memory Usage (Available MBytes, Page Faults/sec)</li>
+                                <li>Disk I/O (Avg. Disk Queue Length, Disk Read/Write Bytes/sec)</li>
+                                <li>Network Interface (Bytes Total/sec, Output Queue Length)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Availability:</strong>
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Server uptime (ping, RDP connectivity).</li>
+                                <li>Service status (IIS, SQL Server, other critical services).</li>
+                                <li>Website/Application responsiveness.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Security:</strong>
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Logon attempts (successful and failed).</li>
+                                <li>Firewall activity (blocked connections).</li>
+                                <li>Antivirus alerts.</li>
+                                <li>Changes to critical system files or user accounts.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Capacity:</strong>
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Disk space usage on all volumes.</li>
+                                <li>SQL Database size and growth.</li>
+                                <li>Log file growth.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Backup Status:</strong> Success/failure of backup jobs.</li>
+                    </ul>
+                </div>
+                <hr class="dark:border-gray-700">
+                <div>
+                    <h4 class="font-semibold text-lg">b. Monitoring Tools:</h4>
+                    <ul class="list-disc list-inside ml-4">
+                        <li><strong>Event Viewer:</strong> For System, Application, Security, Setup, and Forwarded Events, as well as application-specific logs (e.g., Windows Backup, IIS, SQL Server).</li>
+                        <li><strong>Performance Monitor (PerfMon):</strong> For real-time and historical performance data. Configure Data Collector Sets for baseline and trend analysis.</li>
+                        <li><strong>Resource Monitor:</strong> For detailed real-time view of CPU, memory, disk, and network usage by process.</li>
+                        <li><strong>Task Manager:</strong> For quick overview of running processes and performance.</li>
+                        <li><strong>Windows Server Backup Console:</strong> For backup job status.</li>
+                        <li><strong>SQL Server Management Studio (SSMS):</strong> For SQL Server performance (Activity Monitor, DMVs, Query Store), error logs, and Agent job status.</li>
+                        <li><strong>IIS Manager:</strong> For website status, application pool health, and request tracing.</li>
+                        <li><strong>PowerShell Cmdlets:</strong>
+                            <ul class="list-circle list-inside ml-6">
+                                <li><code>Get-EventLog</code>, <code>Get-WinEvent</code></li>
+                                <li><code>Get-Counter</code> (for performance counters)</li>
+                                <li><code>Get-Service</code></li>
+                                <li><code>Get-Disk</code>, <code>Get-Volume</code></li>
+                                <li><code>Test-NetConnection</code></li>
+                            </ul>
+                        </li>
+                        <li><strong>Third-Party Monitoring Tools:</strong> [If any are used, e.g., Nagios, Zabbix, PRTG, School IT's monitoring system - specify here].</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">4. Alerting & Escalation</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>Define thresholds for key metrics that should trigger alerts. Configure alerts where possible.</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li><strong>Alert Examples:</strong>
+                        <ul class="list-circle list-inside ml-6">
+                            <li>Disk space on C: drive < 15% free.</li>
+                            <li>CPU utilization > 90% for 10 minutes.</li>
+                            <li>Critical service (e.g., W3SVC, MSSQLSERVER) stopped.</li>
+                            <li>Backup job failure.</li>
+                            <li>Multiple failed logon attempts for an admin account.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Notification Methods:</strong> [e.g., Email notifications from SQL Server Agent, Event Viewer task triggers sending email (requires SMTP configuration), alerts from third-party tools].</li>
+                    <li><strong>Escalation Path:</strong>
+                        <ol class="list-decimal list-inside ml-6">
+                            <li>Primary Contact for Alerts: [Name/Team, e.g., CIT Server Admin on duty].</li>
+                            <li>Secondary Contact / Backup: [Name/Team].</li>
+                            <li>Faculty Advisor / School IT: For critical unresolved issues or major outages.</li>
+                        </ol>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">5. Documentation & Reporting</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <ul class="list-disc list-inside ml-4">
+                    <li><strong>Maintenance Log:</strong> Maintain a log of all significant maintenance activities performed, including dates, times, tasks performed, outcomes, and personnel involved. This can be a shared document or a section in a logbook. [Specify location/format, e.g., "Shared OneDrive Excel sheet: CIT_Server_Maintenance_Log.xlsx"].</li>
+                    <li><strong>Incident Reports:</strong> Document any significant incidents (outages, security breaches, major performance degradations), including detection, response, resolution, and lessons learned.</li>
+                    <li><strong>Performance Reports:</strong> Periodically (e.g., monthly) generate and review performance reports to identify trends and potential future bottlenecks.</li>
+                    <li>Ensure all changes to server configuration resulting from maintenance or troubleshooting are updated in the relevant sections of this overall documentation.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">6. Responsibilities</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <ul class="list-disc list-inside ml-4">
+                    <li><strong>Daily/Weekly Checks:</strong> [Specify Team Member(s) or Rotating Role, e.g., "Assigned CIT Student Admin"].</li>
+                    <li><strong>Monthly Tasks & Reporting:</strong> [Specify Team Member(s) or Lead, e.g., "CIT Project Manager / Lead Server Admin"].</li>
+                    <li><strong>Alert Response:</strong> As per escalation path.</li>
+                    <li><strong>Plan Review & Updates:</strong> [e.g., "CIT Project Manager, annually or as needed"].</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-10">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; <span id="year"></span> CIT Documentation Team. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
