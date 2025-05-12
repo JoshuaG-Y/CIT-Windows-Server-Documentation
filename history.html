@@ -136,40 +136,57 @@
                 </ol>
             </section>
         </div>
-        
 
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-teal-600 dark:text-teal-400 mb-4">Step 6:  Deployment and Testing</h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
-                <li><span class="font-semibold">Date:</span> [Date of deployment]</li>
-                <li><span class="font-semibold">Deployment Method:</span> [e.g., Git pull, rsync, CI/CD pipeline]</li>
-                <li><span class="font-semibold">Testing:</span>
-                    <ul class="list-disc list-inside ml-5 space-y-1">
-                        <li>Performed basic functional testing.</li>
-                        <li>Tested database connectivity.</li>
-                        <li>Checked правильное routing and обращение to assets.</li>
-                        <li>(Optional) Performed load testing.</li>
-                        <li>(Optional) Checked logs for errors.</li>
-                    </ul>
-                </li>
-                <li><span class="font-semibold">Initial Deployment URL:</span> [The URL of the deployed application]</li>
-            </ol>
-        </section>
-         <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-pink-600 dark:text-pink-400 mb-4">Step 7:  Ongoing Maintenance</h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
-                <li><span class="font-semibold">Date:</span> [Date of last update]</li>
-                <li><span class="font-semibold">Maintenance Procedures:</span>
-                    <ul class="list-disc list-inside ml-5 space-y-1">
-                        <li> регулярные security updates of the underlying OS and installed packages.</li>
-                        <li> регулярные backups of the application data and database.</li>
-                        <li>Monitoring of server resources (CPU, memory, disk space).</li>
-                        <li>Log rotation and archiving.</li>
-                        <li>Application performance monitoring.</li>
-                    </ul>
-                </li>
-            </ol>
-        </section>
-    </div>
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+            <section>
+                <h2 class="text-2xl font-semibold text-teal-600 dark:text-teal-400 mb-4">Phase 6: Deployment, Testing & Documentation</h2>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                    <li><span class="font-semibold">Date:</span> [Date of deployment and testing]</li>
+                    <li><span class="font-semibold">Final Deployment & Testing:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Ensured the web application was accessible via the virtual IP and <code>drhscit.org</code>.</li>
+                            <li>Performed comprehensive functional testing of the full-stack application.</li>
+                            <li>Tested database connectivity from the application.</li>
+                            <li>Verified RDP and SSH access.</li>
+                            <li>Checked IIS and SQL Server logs for any errors.</li>
+                        </ul>
+                    </li>
+                    <li><span class="font-semibold">Documentation Publishing:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Created/updated documentation files (like this one).</li>
+                            <li>Committed documentation to the GitHub repository.</li>
+                            <li>Configured GitHub Pages to serve the documentation from the repository as a static website.</li>
+                            <li>Verified the documentation site was live and accessible via its <code>drhscit.org</code> subdomain (if applicable) or GitHub Pages URL.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <section>
+                <h2 class="text-2xl font-semibold text-pink-600 dark:text-pink-400 mb-4">Phase 7: Ongoing Maintenance Plan</h2>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                    <li><span class="font-semibold">Procedures Established:</span> [Date of establishing maintenance plan]</li>
+                    <li><span class="font-semibold">Maintenance Tasks:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Regularly apply Windows Updates and security patches for the OS and installed software (SQL Server, IIS, etc.).</li>
+                            <li>Schedule regular backups of the application data, IIS configuration, and SQL Server databases.</li>
+                            <li>Monitor server resources (CPU, memory, disk space, network I/O) using Performance Monitor or Windows Admin Center.</li>
+                            <li>Implement log rotation and archiving for IIS, SQL Server, and system event logs.</li>
+                            <li>Periodically review security logs and audit trails.</li>
+                            <li>Test disaster recovery procedures.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-10">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 CIT Documentation Team. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
