@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Hardening Guide - CIT Windows Server 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <header class="bg-yellow-600 text-white py-4">
+        <div class="container mx-auto px-4">
+            <a href="index.html" class="text-sm hover:underline">&larr; Back to Home</a>
+            <h1 class="text-3xl font-bold mt-2">Security Hardening Guide</h1>
+            <p class="text-sm">Best Practices and Steps for Securing Windows Server 2025</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Introduction</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>Securing Windows Server 2025 is crucial to protect school data, maintain service availability, and prevent unauthorized access. This guide outlines key steps and best practices. It is not exhaustive but covers essential areas for the CIT server environment.</p>
+                <p><strong>Security is an ongoing process, not a one-time setup.</strong> Regularly review and update security configurations.</p>
+                <p>Consider using <a href="https://learn.microsoft.com/en-us/windows/security/threat-protection/windows-security-baselines" target="_blank" class="text-blue-500 hover:underline">Microsoft Security Baselines</a> as a reference for comprehensive GPO settings.</p>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">1. Initial Server Setup Security</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <h4 class="font-semibold text-lg">a. Secure Built-in Administrator Account:</h4>
+                <ul class="list-disc list-inside ml-4">
+                    <li><strong>Rename the default "Administrator" account:</strong> This makes it harder for attackers to target a known account name. (Use Local Users and Groups: <code>lusrmgr.msc</code> or Group Policy).</li>
+                    <li><strong>Use a strong, unique password:</strong> For the renamed administrator account and any other administrative accounts. Store this password securely in KeePass.</li>
+                    <li><strong>Disable the Guest account:</strong> Ensure it is disabled in <code>lusrmgr.msc</code>.</li>
+                </ul>
+                <h4 class="font-semibold text-lg mt-3">b. Strong Password Policies:</h4>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Configure Local Security Policy (<code>secpol.msc</code>) or Group Policy (<code>gpedit.msc</code> for local, or domain GPO) under "Account Policies" &rarr; "Password Policy":
+                        <ul class="list-circle list-inside ml-6">
+                            <li>Enforce password history.</li>
+                            <li>Maximum password age.</li>
+                            <li>Minimum password age.</li>
+                            <li>Minimum password length (e.g., 12-14 characters or more).</li>
+                            <li>Password must meet complexity requirements.</li>
+                            <li>Store passwords using reversible encryption (ensure this is DISABLED).</li>
+                        </ul>
+                    </li>
+                </ul>
+                 <h4 class="font-semibold text-lg mt-3">c. Account Lockout Policies:</h4>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Configure under "Account Policies" &rarr; "Account Lockout Policy":
+                        <ul class="list-circle list-inside ml-6">
+                            <li>Account lockout duration.</li>
+                            <li>Account lockout threshold (e.g., 5 invalid logon attempts).</li>
+                            <li>Reset account lockout counter after.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">2. Patch Management (Windows Updates)</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>Keeping the server updated is one of the most critical security measures.</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Configure Windows Update settings (Settings &rarr; Update & Security &rarr; Windows Update).</li>
+                    <li>Aim for automatic download and scheduled installation of updates during maintenance windows to minimize disruption.</li>
+                    <li>Regularly check for and install updates for all installed software, not just the OS (e.g., SQL Server Cumulative Updates, IIS extensions, third-party tools).</li>
+                    <li>Subscribe to security mailing lists or RSS feeds from Microsoft and other software vendors.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">3. Windows Defender Suite</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <h4 class="font-semibold text-lg">a. Windows Defender Antivirus:</h4>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Ensure it is enabled and real-time protection is active.</li>
+                    <li>Keep antivirus definitions up to date (usually automatic via Windows Update).</li>
+                    <li>Configure scheduled scans.</li>
+                    <li>Be cautious with exclusions. Only exclude files/folders/processes if absolutely necessary and you understand the risk (e.g., SQL Server database files, specific application executables known to cause conflicts, after thorough testing).</li>
+                </ul>
+                <h4 class="font-semibold text-lg mt-3">b. Windows Defender Firewall with Advanced Security:</h4>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Ensure the firewall is active for all network profiles (Domain, Private, Public).</li>
+                    <li>Follow the principle of least privilege: Block all inbound traffic by default and only allow specific, necessary ports/protocols/applications. (Refer to <code>network-config.html</code> for specific rule examples).</li>
+                    <li>Regularly review firewall rules to remove any that are no longer needed.</li>
+                    <li>Enable firewall logging for troubleshooting and security monitoring.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">4. User Account Control (UAC)</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>UAC helps prevent malware from damaging a machine and helps organizations deploy a better-managed desktop.</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Keep UAC enabled. The default settings are generally recommended.</li>
+                    <li>Avoid running with UAC disabled or set to "Never notify".</li>
+                    <li>Administrators should run with standard user privileges and elevate only when necessary.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">5. Principle of Least Privilege</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>Users and services should only have the minimum permissions necessary to perform their tasks.</p>
+                <h4 class="font-semibold text-lg">a. User Accounts:</h4>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Avoid using administrative accounts for daily tasks. Create separate standard user accounts.</li>
+                    <li>Limit membership in highly privileged groups (Administrators, Domain Admins if domain-joined).</li>
+                </ul>
+                <h4 class="font-semibold text-lg mt-3">b. Service Accounts:</h4>
+                <ul class="list-disc list-inside ml-4">
+                    <li><strong>IIS Application Pools:</strong> Use dedicated Application Pool Identities (e.g., <code>IIS APPPOOL\YourAppPoolName</code>) instead of highly privileged accounts like LocalSystem or NetworkService where possible. Grant these identities minimal necessary NTFS permissions to application folders and other resources.</li>
+                    <li><strong>SQL Server Services:</strong> Use dedicated, low-privilege accounts for SQL Server services (e.g., virtual accounts like <code>NT SERVICE\MSSQLSERVER</code> or Group Managed Service Accounts (gMSAs) in a domain environment).</li>
+                    <li>Other services should also run under accounts with the least privilege.</li>
+                </ul>
+                <h4 class="font-semibold text-lg mt-3">c. User Rights Assignment:</h4>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Review and restrict user rights in Local Security Policy (<code>secpol.msc</code>) or Group Policy under "User Rights Assignment". For example, limit who can "Log on as a batch job," "Log on as a service," "Act as part of the operating system," etc.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">6. Minimize Attack Surface</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <ul class="list-disc list-inside ml-4">
+                    <li><strong>Remove Unnecessary Roles and Features:</strong> Use Server Manager to uninstall any roles or features that are not explicitly required for the server's purpose. Each installed component can potentially introduce vulnerabilities.</li>
+                    <li><strong>Disable Unnecessary Services:</strong> In the Services MMC (<code>services.msc</code>), review services set to "Automatic" or "Automatic (Delayed Start)". If a service is not needed, set its startup type to "Disabled" or "Manual". Research services before disabling them.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">7. Secure Remote Access</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <h4 class="font-semibold text-lg">a. RDP (Remote Desktop Protocol):</h4>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Ensure Network Level Authentication (NLA) is enabled.</li>
+                    <li>Use strong passwords for all accounts allowed to RDP.</li>
+                    <li>Consider changing the default RDP port (TCP 3389) to a non-standard port (requires firewall and client configuration changes). This is security through obscurity but can reduce automated scans.</li>
+                    <li>Limit RDP access via firewall rules to specific trusted IP addresses or use a VPN.</li>
+                    <li>Implement multi-factor authentication (MFA) for RDP if possible (e.g., using Azure MFA with NPS extension, or third-party tools).</li>
+                </ul>
+                <h4 class="font-semibold text-lg mt-3">b. SSH (Secure Shell):</h4>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Prefer key-based authentication over password authentication. If using passwords, ensure they are very strong.
+                        <code class="block bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm my-1"># In sshd_config (%ProgramData%\ssh\sshd_config)
+PasswordAuthentication no
+PubkeyAuthentication yes</code>
+                    </li>
+                    <li>Protect private keys securely.</li>
+                    <li>Limit SSH access via firewall rules to specific trusted IP addresses.</li>
+                    <li>Keep OpenSSH server software updated.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">8. IIS Security (Web Server)</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <ul class="list-disc list-inside ml-4">
+                    <li>Keep IIS and its modules updated.</li>
+                    <li>Remove unused IIS modules.</li>
+                    <li>Configure SSL/TLS for all websites (HTTPS). Use strong ciphers and protocols (e.g., TLS 1.2, TLS 1.3). Disable old/weak protocols like SSLv3, TLS 1.0/1.1. (Tools like IISCrypto can help manage this).</li>
+                    <li>Use dedicated Application Pool identities with least privilege.</li>
+                    <li>Configure request filtering to block malicious requests (e.g., based on size, extensions, sequences).</li>
+                    <li>Disable directory browsing unless specifically needed.</li>
+                    <li>Regularly review IIS logs for suspicious activity. Location: <code>%SystemDrive%\inetpub\logs\LogFiles\W3SVC&lt;SiteID&gt;</code>.</li>
+                    <li>Implement security headers (e.g., HSTS, X-Frame-Options, X-Content-Type-Options, Content-Security-Policy).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">9. SQL Server Security</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <ul class="list-disc list-inside ml-4">
+                    <li>Keep SQL Server updated with the latest Cumulative Updates (CUs) and security patches.</li>
+                    <li>Use Windows Authentication where possible. If using SQL Authentication (Mixed Mode), ensure strong 'sa' password (and consider disabling 'sa' after creating other sysadmin accounts) and strong passwords for all SQL logins.</li>
+                    <li>Apply the principle of least privilege for database users and logins. Grant only necessary permissions.</li>
+                    <li>Encrypt connections to SQL Server (Force Encryption option in SQL Server Configuration Manager, or application-level encryption).</li>
+                    <li>Configure SQL Server to listen on a non-default port if desired (requires firewall and client changes).</li>
+                    <li>Disable unused SQL Server features and components (e.g., xp_cmdshell unless absolutely necessary and secured).</li>
+                    <li>Regularly review SQL Server error logs and audit logs.</li>
+                    <li>Secure SQL Server backup files.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">10. Auditing and Logging</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>Effective logging and regular review are critical for detecting and responding to security incidents.</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Configure Audit Policy (<code>secpol.msc</code> or Group Policy under "Advanced Audit Policy Configuration"):
+                        <ul class="list-circle list-inside ml-6">
+                            <li>Audit logon events (success and failure).</li>
+                            <li>Audit account management (success and failure).</li>
+                            <li>Audit policy change (success and failure).</li>
+                            <li>Audit object access (e.g., file system, registry - can be noisy, configure selectively).</li>
+                            <li>Audit privilege use.</li>
+                        </ul>
+                    </li>
+                    <li>Ensure adequate size for Event Logs (System, Security, Application) and configure retention (e.g., overwrite as needed, or archive).</li>
+                    <li>Regularly review key event logs for suspicious activity. Consider a centralized logging solution (SIEM) if budget and resources allow for larger environments.</li>
+                    <li>Enable logging for IIS, SQL Server, and other critical applications.</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">11. Physical Security</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>While this guide focuses on software hardening, physical security of the CIT hardware is also important.</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Ensure the server is located in a secure room with restricted access.</li>
+                    <li>Protect against environmental threats (power, cooling).</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">12. Regular Security Reviews</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <ul class="list-disc list-inside ml-4">
+                    <li>Schedule periodic security reviews of the server configuration.</li>
+                    <li>Stay informed about new vulnerabilities and threats.</li>
+                    <li>Re-evaluate security settings as the server's role or applications change.</li>
+                    <li>Use tools like Microsoft Defender for Cloud (if applicable/Azure-connected) or third-party vulnerability scanners if available.</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-10">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; <span id="year"></span> CIT Documentation Team. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
