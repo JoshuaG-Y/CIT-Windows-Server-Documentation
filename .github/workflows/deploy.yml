@@ -1,21 +1,22 @@
 name: Deploy to Windows Server
-
 on:
   push:
     branches:
       - main
-
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
       - name: Mark project folder as safe
         run: git config --global --add safe.directory "C:/Projects/CIT-Windows-Server-Documentation"
-
       - name: Checkout repo
         uses: actions/checkout@v3
-
       - name: Deploy to local folder
         run: |
+          # Try to make sure the directory exists and is writable
+          mkdir -p C:\Projects\CIT-Windows-Server-Documentation 2>nul
+          attrib -r C:\Projects\CIT-Windows-Server-Documentation\* /s /d
           cd C:\Projects\CIT-Windows-Server-Documentation
-          git pull
+          # Use force option to overwrite local changes
+          git fetch origin main
+          git reset --hard origin/main
