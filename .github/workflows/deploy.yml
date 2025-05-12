@@ -8,13 +8,23 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
+
     steps:
+      # Mark the project folder as safe for git operations
       - name: Mark project folder as safe
         run: git config --global --add safe.directory "C:/Projects/CIT-Windows-Server-Documentation"
 
+      # Checkout the repository code
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # Ensure permissions are set on the .git folder
+      - name: Fix .git folder permissions
+        run: |
+          takeown /F "C:\Projects\CIT-Windows-Server-Documentation\.git" /R /D Y
+          icacls "C:\Projects\CIT-Windows-Server-Documentation\.git" /T /grant "NETWORK SERVICE":(F)
+
+      # Deploy to the local folder
       - name: Deploy to local folder
         run: |
           cd C:\Projects\CIT-Windows-Server-Documentation
