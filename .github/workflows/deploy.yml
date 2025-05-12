@@ -1,38 +1,18 @@
 name: Deploy to Windows Server
+
 on:
   push:
     branches:
-      - main
+      - main  # Or your deployment branch
+
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Clean and clone repo
-        shell: powershell
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy to local folder
         run: |
-          # Use existing SSH key for Git
-          git config --global core.sshCommand "ssh -i ~/.ssh/id_ed25519 -F /dev/null"
-      
-          # Test SSH connection (will warn if not authorized, but that's fine for test)
-          ssh -T git@github.com -o StrictHostKeyChecking=no
-      
-          # Fix folder permissions so runner can access
-          if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation") {
-            takeown /F "C:\Projects\CIT-Windows-Server-Documentation" /R /D Y
-            icacls "C:\Projects\CIT-Windows-Server-Documentation" /T /grant "NETWORK SERVICE":(F)
-          }
-      
-          # Pull or clone
-          if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation\.git") {
-            Set-Location -Path "C:\Projects\CIT-Windows-Server-Documentation"
-            git pull origin main
-          } else {
-            if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation") {
-              Remove-Item -Path "C:\Projects\CIT-Windows-Server-Documentation\*" -Recurse -Force
-            } else {
-              New-Item -ItemType Directory -Path "C:\Projects\CIT-Windows-Server-Documentation" -Force
-            }
-      
-            Set-Location -Path "C:\Projects"
-            git clone git@github.com:Antigro09/CIT-Windows-Server-Documentation.git
-          }
+          cd C:\Projects\CIT-Windows-Server-Documentation
+          git pull origin main
