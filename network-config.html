@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detailed Network Configuration - CIT Windows Server 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <header class="bg-purple-600 text-white py-4">
+        <div class="container mx-auto px-4">
+            <a href="index.html" class="text-sm hover:underline">&larr; Back to Home</a>
+            <h1 class="text-3xl font-bold mt-2">Detailed Network Configuration</h1>
+            <p class="text-sm">IP Addressing, drhscit.org Integration, and Firewall Rules</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">1. Server Static IP Configuration</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>The Windows Server 2025 requires a static IP address for reliable service delivery and accessibility. This is configured directly on the server's network adapter.</p>
+                <h4 class="font-semibold text-lg">Steps:</h4>
+                <ol class="list-decimal list-inside ml-4 space-y-2">
+                    <li>Open Network Connections: Run <code>ncpa.cpl</code> or navigate via Control Panel.</li>
+                    <li>Right-click the primary network adapter (e.g., "Ethernet0") and select "Properties".</li>
+                    <li>Select "Internet Protocol Version 4 (TCP/IPv4)" and click "Properties".</li>
+                    <li>Choose "Use the following IP address" and enter the assigned static IP details:
+                        <ul class="list-disc list-inside ml-6 mt-1">
+                            <li><strong>IP address:</strong> 10.1.10.2</li>
+                            <li><strong>Subnet mask:</strong> 255.255.255.0</li>
+                            <li><strong>Default gateway:</strong> 10.1.10.1</li>
+                        </ul>
+                    </li>
+                    <li>Choose "Use the following DNS server addresses" and enter the DNS server details:
+                        <ul class="list-disc list-inside ml-6 mt-1">
+                            <li><strong>Preferred DNS server:</strong> 8.8.8.8</li>
+                            <li><strong>Alternate DNS server:</strong> 8.8.4.4</li>
+                        </ul>
+                    </li>
+                    <li>Click "OK" to save changes. Verify connectivity using <code>ipconfig /all</code> and by pinging the gateway and an external address.</li>
+                </ol>
+                <p><em>[Placeholder for screenshots of network configuration dialogs]</em></p>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">2. Virtual IP (drhscit.org) Integration</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>The server is accessible externally via <code>drhscit.org</code>, which resolves to a Virtual IP (VIP). This setup involves coordination with the School IT department.</p>
+                <h4 class="font-semibold text-lg">Key Components:</h4>
+                <ul class="list-disc list-inside ml-4 space-y-2">
+                    <li><strong>Virtual IP (VIP):</strong> An IP address managed by the school's main firewall/router (e.g., [Enter actual VIP address if known]). This is the public-facing IP for <code>drhscit.org</code>.</li>
+                    <li><strong>NAT/PAT (Network/Port Address Translation):</strong> The School IT firewall performs NAT/PAT to translate traffic destined for the VIP on specific ports (e.g., 80 for HTTP, 443 for HTTPS) to the server's internal static IP address and the corresponding port.
+                        <ul class="list-circle list-inside ml-6 mt-1">
+                            <li>Example: Traffic to [VIP]:443 is forwarded to [Server's Static IP]:443.</li>
+                        </ul>
+                    </li>
+                    <li><strong>DNS Configuration:</strong>
+                        <ul class="list-circle list-inside ml-6 mt-1">
+                            <li>An <strong>A record</strong> for <code>drhscit.org</code> (and any subdomains like <code>www.drhscit.org</code> or <code>app.drhscit.org</code>) must be created in the public DNS zone for <code>drhscit.org</code>, pointing to the VIP. This is managed by School IT or the domain registrar.</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4 class="font-semibold text-lg">Coordination with School IT:</h4>
+                <p>Provide the School IT department with:</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li>The server's static IP address.</li>
+                    <li>The list of external ports that need to be opened/forwarded (e.g., TCP 80, TCP 443, TCP 22 for SSH if external access is required).</li>
+                </ul>
+                <p>Request them to:</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li>Assign a VIP if one is not already designated.</li>
+                    <li>Configure the necessary NAT/PAT rules on their firewall.</li>
+                    <li>Ensure the public DNS records for <code>drhscit.org</code> are correctly pointing to the VIP.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">3. Windows Defender Firewall Configuration</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>The Windows Defender Firewall with Advanced Security should be configured to allow necessary inbound traffic and block all other unsolicited connections.</p>
+                <h4 class="font-semibold text-lg">Default Policy:</h4>
+                <p>By default, Windows Firewall blocks unsolicited inbound connections and allows all outbound connections. This is generally a good starting point.</p>
+                <h4 class="font-semibold text-lg">Essential Inbound Rules (Examples using PowerShell):</h4>
+                <ul class="list-disc list-inside ml-4 space-y-2">
+                    <li><strong>RDP (Remote Desktop Protocol - TCP 3389):</strong>
+                        <code class="block bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm my-1">Enable-NetFirewallRule -DisplayGroup "Remote Desktop"</code>
+                        <p class="text-xs">Consider restricting the scope to specific trusted IP addresses or subnets if possible.</p>
+                    </li>
+                    <li><strong>SSH (Secure Shell - TCP 2425):</strong>
+                        <code class="block bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm my-1">New-NetFirewallRule -Name "SSH-In-TCP" -DisplayName "SSH Inbound (TCP)" -Direction Inbound -Protocol TCP -Action Allow -LocalPort 2425 -Profile Any -Description "Allow SSH Inbound"</code>
+                    </li>
+                    <li><strong>HTTP (Web Traffic - TCP 2424):</strong>
+                        <code class="block bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm my-1">New-NetFirewallRule -Name "HTTP-In-TCP" -DisplayName "HTTP Inbound (TCP)" -Direction Inbound -Protocol TCP -Action Allow -LocalPort 2424 -Profile Any -Description "Allow HTTP Inbound"</code>
+                    </li>
+                    <li><strong>HTTPS (Secure Web Traffic - TCP 443):</strong>
+                        <code class="block bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm my-1">New-NetFirewallRule -Name "HTTPS-In-TCP" -DisplayName "HTTPS Inbound (TCP)" -Direction Inbound -Protocol TCP -Action Allow -LocalPort 443 -Profile Any -Description "Allow HTTPS Inbound"</code>
+                    </li>
+                    <li><strong>SQL Server (Default Instance - TCP 1433):</strong>
+                        <code class="block bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm my-1">New-NetFirewallRule -Name "SQL-Server-In-TCP" -DisplayName "SQL Server (TCP-In)" -Direction Inbound -Protocol TCP -Action Allow -LocalPort 1433 -Profile Any -Description "Allow SQL Server Inbound"</code>
+                        <p class="text-xs">If using a named instance or a different port, adjust <code>-LocalPort</code> accordingly.</p>
+                    </li>
+                     <li><strong>SQL Server Browser Service (UDP 1434 - if using named instances):</strong>
+                        <code class="block bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm my-1">New-NetFirewallRule -Name "SQL-Browser-In-UDP" -DisplayName "SQL Server Browser (UDP-In)" -Direction Inbound -Protocol UDP -Action Allow -LocalPort 1434 -Profile Any -Description "Allow SQL Server Browser Inbound"</code>
+                    </li>
+                </ul>
+                <h4 class="font-semibold text-lg">Verifying Rules:</h4>
+                <p>Use the "Windows Defender Firewall with Advanced Security" MMC snap-in (<code>wf.msc</code>) to view and manage rules. Or use PowerShell: <code>Get-NetFirewallRule -DisplayName "*SSH*"</code>.</p>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">4. DNS Client Settings</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <p>The server's DNS client settings (configured in the TCP/IP properties) determine how it resolves hostnames to IP addresses. These should typically point to reliable and fast DNS servers.</p>
+                <ul class="list-disc list-inside ml-4">
+                    <li><strong>Primary DNS Server:</strong> Usually the School IT's internal DNS server or a robust public DNS server.</li>
+                    <li><strong>Secondary DNS Server:</strong> Provides redundancy if the primary DNS server is unavailable.</li>
+                </ul>
+                <p>To verify DNS resolution, use <code>nslookup [hostname]</code> or <code>Resolve-DnsName [hostname]</code> in PowerShell.</p>
+                <p>Flush DNS cache if experiencing resolution issues: <code>ipconfig /flushdns</code>.</p>
+            </div>
+        </section>
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">5. Network Troubleshooting Tools</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+                <ul class="list-disc list-inside ml-4 space-y-2">
+                    <li><strong><code>ping [hostname/IP]</code>:</strong> Tests basic ICMP connectivity to a host.</li>
+                    <li><strong><code>tracert [hostname/IP]</code> (or <code>pathping</code>):</strong> Traces the route taken to a destination host, showing each hop. Useful for identifying where connectivity breaks down.</li>
+                    <li><strong><code>ipconfig /all</code>:</strong> Displays full TCP/IP configuration for all adapters.</li>
+                    <li><strong><code>nslookup [hostname]</code>:</strong> Queries DNS servers to resolve hostnames.</li>
+                    <li><strong><code>Get-NetIPConfiguration</code> (PowerShell):</strong> Similar to <code>ipconfig</code>.</li>
+                    <li><strong><code>Test-NetConnection [hostname] -Port [portnumber]</code> (PowerShell):</strong> Tests TCP connectivity to a specific port on a remote host. Very useful for checking if a service is listening and not blocked by a firewall. Example: <code>Test-NetConnection drhscit.org -Port 443</code>.</li>
+                    <li><strong><code>Get-NetAdapter</code> (PowerShell):</strong> Shows network adapter properties.</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">6. Simple Network Diagram</h2>
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-3">
+            <!--
+                <p><em>[Placeholder for a simple network diagram image or textual description. The diagram should illustrate: Internet -> School Firewall (VIP for drhscit.org) -> School Network -> Windows Server 2025 (Static IP). Show key ports being forwarded.]</em></p>
+                <p>Example textual description:</p>
+            -->
+                <pre class="bg-gray-200 dark:bg-gray-700 p-3 rounded text-sm">
+Internet User
+      |
+      v (Accesses drhscit.org - VIP: [School VIP Address])
+School Main Firewall / Router
+      | (NAT/PAT: VIP Port 80/443 -> Server Static IP Port 80/443)
+      v
+School Internal Network
+      |
+      v
+Windows Server 2025
+(Static IP: 10.1.10.2)
+  - IIS (Port 80/443)
+  - SQL Server (Port 1433)
+  - RDP (Port 3389)
+  - SSH (Port 2425)
+                </pre>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-10">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; <span id="year"></span> CIT Documentation Team. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
