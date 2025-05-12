@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
     <title>Server Setup History & Chronology</title>
+=======
+    <title>Server Setup History</title>
+>>>>>>> 64c886b (Add more details to the history page, fix formatting, and change around catagories.)
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,6 +18,7 @@
         }
     </style>
 </head>
+<<<<<<< HEAD
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
     <header class="bg-green-600 text-white py-4"> <!-- Changed color for distinction -->
         <div class="container mx-auto px-4">
@@ -26,6 +31,13 @@
     <main class="container mx-auto px-4 py-10">
         <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
             This document serves as a chronological record of the Windows Server 2025 setup process. Please update the dates and add specific notes as tasks are completed. This helps track progress and understand the evolution of the server configuration.
+=======
+<body class="bg-gray-100 dark:bg-gray-900">
+    <div class="container">
+        <h1 class="text-3xl font-semibold text-gray-800 dark:text-white mb-6">Server Setup History</h1>
+        <p class="text-gray-600 dark:text-gray-300 mb-8">
+            This guide outlines the steps that we took to setup the server.  It's organized in the order we had done it.
+>>>>>>> 64c886b (Add more details to the history page, fix formatting, and change around catagories.)
         </p>
         
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
@@ -35,6 +47,7 @@
                     <li><span class="font-semibold">Date Completed:</span> [Enter Date, e.g., 2025-04-15]</li>
                     <li><span class="font-semibold">Key Activities & Notes:</span>
                         <ul class="list-disc list-inside ml-5 space-y-1">
+<<<<<<< HEAD
                             <li>Downloaded Windows Server 2025 Standard (Desktop Experience) ISO.</li>
                             <li>Created bootable USB drive.</li>
                             <li>Installed OS onto designated CIT Hardware.
@@ -46,12 +59,18 @@
                             <li>Performed first Windows Update check and installation.</li>
                             <li>Set server hostname to: [e.g., CITSRV01].</li>
                             <li>Set system timezone to Eastern Standard Time.</li>
+=======
+                            <li>Downloaded the iso file and formatted it onto a usb to install it onto the server hardware.</li>
+                            <li>Ran into a problem with the wrong formatting on the drive and had to research more about the hardware.</li>
+                            <li>Installed the OS onto the server hardware without the certain requirements that could limit the server.</li>
+>>>>>>> 64c886b (Add more details to the history page, fix formatting, and change around catagories.)
                         </ul>
                     </li>
                 </ol>
             </section>
         </div>
         
+<<<<<<< HEAD
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
             <section>
                 <h2 class="text-2xl font-semibold text-green-600 dark:text-green-400 mb-4">Phase 2: Network Configuration & Remote Access</h2>
@@ -160,10 +179,67 @@
                         </ul>
                     </li>
                 </ol>
-            </section>
+=======
+        <hr class="my-8 border-transparent">
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-green-600 dark:text-green-400 mb-4">Step 2: System Configuration</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Details:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>Installed and configured OS: Timezone, secure password, and other stuff.</li>
+                        <li>Allocated a static IP.</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
         </div>
         
+        <hr class="my-8 border-transparent">
+        
         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Step 3:  Application Setup</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Details:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>Installed OpenSSH for remote SSH access.</li>
+                        <li>Install required software (Keypass, etc.).</li>
+                        <li>Installed and setup nginx.</li>
+                        <li>Forwarded ports for the SSH and nginx</li>
+                        <li>Installed and configured database software (MySQL).</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+        </div>
+        
+        <hr class="my-8 border-transparent">
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-red-600 dark:text-red-400 mb-4">Step 4:  Further security measures</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Software:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>A.</li>
+                    </ul>
+                </li>
+                <li><span class="font-semibold">Best Practices:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>A.</li>
+                    </ul>
+                </li>
+            </ol>
+>>>>>>> 64c886b (Add more details to the history page, fix formatting, and change around catagories.)
+            </section>
+        </div>
+
+        <hr class="my-8 border-transparent">
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+<<<<<<< HEAD
             <section>
                 <h2 class="text-2xl font-semibold text-pink-600 dark:text-pink-400 mb-4">Phase 7: Ongoing Maintenance Plan Established</h2>
                 <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
@@ -185,6 +261,34 @@
     <footer class="bg-gray-800 text-white py-6 mt-10">
         <div class="container mx-auto px-4 text-center">
             <p>&copy; <span id="year"></span> CIT Documentation Team. All rights reserved.</p>
+=======
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-teal-600 dark:text-teal-400 mb-4">Step 5:  Deployment and Testing</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Testing:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>A.</li>
+                    </ul>
+                </li>
+                <li><span class="font-semibold">Deployment URL:</span> blah</li>
+            </ol>
+        </section>
+        </div>
+
+        <hr class="my-8 border-transparent">
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-teal-600 dark:text-teal-400 mb-4">Step 6:  Lessons Learned</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Testing:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>A.</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+>>>>>>> 64c886b (Add more details to the history page, fix formatting, and change around catagories.)
         </div>
     </footer>
     <script>
