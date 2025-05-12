@@ -3,16 +3,33 @@ name: Deploy to Windows Server
 on:
   push:
     branches:
-      - main  # Or your deployment branch
+      - main
 
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Deploy to local folder
+      - name: Configure SSH and deploy
+        shell: powershell
         run: |
-          cd C:\Projects\CIT-Windows-Server-Documentation
-          git pull origin main
+          # Configure Git to use your SSH key
+          git config --global core.sshCommand "ssh -i C:/Windows/ServiceProfiles/NetworkService/.ssh/id_ed25519 -F /dev/null"
+
+          # Add GitHub to known hosts if needed
+          if (!(Test-Path "C:\Windows\ServiceProfiles\NetworkService\.ssh\known_hosts")) {
+            ssh-keyscan github.com >> C:\Windows\ServiceProfiles\NetworkService\.ssh\known_hosts
+          }
+
+          # Set permissions so runner can access the folder
+          if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation") {
+            takeown /F "C:\Projects\CIT-Windows-Server-Documentation" /R /D Y
+            icacls "C:\Projects\CIT-Windows-Server-Documentation" /T /grant "NETWORK SERVICE":F
+          }
+
+          # Pull if repo exists, clone if not
+          if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation\.git") {
+            Set-Location -Path "C:\Projects\CIT-Windows-Server-Documentation"
+            git pull origin main
+          } else {
+            git clone git@github.com:Antigro09/CIT-Windows-Server-Documentation.git C:\Projects\CIT-Windows-Server-Documentation
+          }
