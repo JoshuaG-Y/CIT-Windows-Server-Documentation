@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Server Setup Guide</title>
+    <title>Server Setup History</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,156 +12,181 @@
         body {
             font-family: 'Inter', sans-serif;
         }
-        /* Optional:  If you want to ensure the content takes up minimum height of the screen */
-        .container {
-            min-height: 80vh; /* At least 80% of the viewport height */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start; /* Align items to the start (top in this case) */
-            padding-top: 2.5rem; /* py-10 equivalent */
-            padding-bottom: 2.5rem;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            margin-left: auto;
-            margin-right: auto;
-
-        }
     </style>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900">
-    <div class="container">
-        <h1 class="text-3xl font-semibold text-gray-800 dark:text-white mb-6">Server Setup Guide</h1>
-        <p class="text-gray-600 dark:text-gray-300 mb-8">
-            This guide outlines the steps that we took to setup the server.  It's organized in the order we had done it.
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <header class="bg-blue-600 text-white py-4">
+        <div class="container mx-auto px-4">
+            <a href="index.html" class="text-sm hover:underline">&larr; Back to Home</a>
+            <h1 class="text-3xl font-bold mt-2">Chronology of Server Setup</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-10">
+        <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">
+            This guide outlines the key stages and steps we took to set up the Windows Server 2025 environment. It's organized chronologically based on our process.
         </p>
         
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <section class="mb-8">
-                <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">Step 1: Getting the OS set up</h2>
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+            <section>
+                <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">Phase 1: Operating System Installation</h2>
                 <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
-                    <li><span class="font-semibold">Initial Setup:</span>
+                    <li><span class="font-semibold">Initial OS Setup:</span>
                         <ul class="list-disc list-inside ml-5 space-y-1">
-                            <li>Downloaded the iso file and formatted it onto a usb to install it onto the server hardware.</li>
-                            <li>Ran into a problem with the wrong formatting on the drive and had to research more about the hardware.</li>
+                            <li>Downloaded the Windows Server 2025 ISO image.</li>
+                            <li>Created a bootable USB drive using a tool like Rufus or the Windows USB/DVD Download Tool.</li>
+                            <li>Installed Windows Server 2025 (Desktop Experience) onto the designated CIT Hardware.</li>
+                            <li>Encountered an issue with disk partitioning/formatting during installation; resolved by adjusting BIOS/UEFI settings and re-partitioning.</li>
+                            <li>Installed necessary drivers for CIT hardware components post-installation via Device Manager or manufacturer downloads.</li>
                         </ul>
                     </li>
                 </ol>
             </section>
         </div>
         
-
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-green-600 dark:text-green-400 mb-4">Step 2: System Configuration</h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
-                <li><span class="font-semibold">Date:</span> [Date of system configuration]</li>
-                <li><span class="font-semibold">Actions:</span>
-                    <ul class="list-disc list-inside ml-5 space-y-1">
-                        <li>Installed essential utilities: <code class="inline-block bg-gray-200 dark:bg-gray-800 text-sm rounded px-1">sudo apt install -y vim curl git</code> (or equivalent).</li>
-                        <li>Configured the timezone: <code class="inline-block bg-gray-200 dark:bg-gray-800 text-sm rounded px-1">sudo timedatectl set-timezone [Your Timezone]</code>.</li>
-                        <li>Allocated a static IP.</li>
-                    </ul>
-                </li>
-            </ol>
-        </section>
-        </div>
-        
-        
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Step 3:  Application Setup</h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
-                <li><span class="font-semibold">Details:</span>
-                    <ul class="list-disc list-inside ml-5 space-y-1">
-                        <li>Installed OpenSSH for remote SSH access.</li>
-                        <li>Generated and added an SSH key for secure access.</li>
-                        <li>Set up the application files (cloned from Git, copied, etc.).  Specify the location.</li>
-                        <li>Installed application dependencies (e.g., <code class="inline-block bg-gray-200 dark:bg-gray-800 text-sm rounded px-1">npm install</code>, <code class="inline-block bg-gray-200 dark:bg-gray-800 text-sm rounded px-1">pip install -r requirements.txt</code>).</li>
-                        <li>Configured environment variables (if any).</li>
-                        <li>Set up a process manager (e.g., systemd, pm2) to keep the application running.
-                           <ul class="list-disc list-inside ml-5 space-y-1">
-                           </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ol>
-        </section>
-        </div>
-        
-        
-            
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-yellow-600 dark:text-yellow-400 mb-4">Step 4: Database Setup (if applicable)</h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
-                <li><span class="font-semibold">Date:</span> [Date of database setup]</li>
-                <li><span class="font-semibold">Database System:</span> [e.g., PostgreSQL 14, MySQL 8.0, MongoDB 5.0]</li>
-                <li><span class="font-semibold">Installation:</span>  Include specific commands or installation method.</li>
-                <li><span class="font-semibold">Configuration:</span>
-                    <ul class="list-disc list-inside ml-5 space-y-1">
-                        <li>Created a database and user for the application.</li>
-                        <li>Configured database authentication.</li>
-                        <li>(Optional) настроен remote access.</li>
-                        <li>(Optional) настроен connection security (e.g., SSL).</li>
-                    </ul>
-                </li>
-            </ol>
-        </section>
-        </div>
-        
-        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-            <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-red-600 dark:text-red-400 mb-4">Step 5:  Web Server Setup (if applicable)</h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
-                <li><span class="font-semibold">Date:</span> [Date of web server setup]</li>
-                <li><span class="font-semibold">Web Server:</span> [e.g., Nginx, Apache]</li>
-                <li><span class="font-semibold">Installation:</span> Include specific commands.</li>
-                <li><span class="font-semibold">Configuration:</span>
-                    <ul class="list-disc list-inside ml-5 space-y-1">
-                        <li>Configured a virtual host/server block for the application.</li>
-                        <li>Set the document root.</li>
-                        <li>Configured правильное proxying (if needed).</li>
-                        <li>Enabled HTTPS (SSL/TLS) with сертификаты from [e.g., Let's Encrypt].</li>
-                        <li>Configured logging.</li>
-                    </ul>
-                </li>
-            </ol>
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+            <section>
+                <h2 class="text-2xl font-semibold text-green-600 dark:text-green-400 mb-4">Phase 2: System Configuration & Basic Setup</h2>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                    <li><span class="font-semibold">Date:</span> [Date of system configuration]</li>
+                    <li><span class="font-semibold">Actions:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Configured server hostname and joined to a workgroup/domain if applicable.</li>
+                            <li>Set the system timezone: Using PowerShell <code class="inline-block bg-gray-200 dark:bg-gray-700 text-sm rounded px-1">Set-TimeZone -Id "Eastern Standard Time"</code> or via Date and Time settings.</li>
+                            <li>Configured a static IP address, subnet mask, default gateway, and DNS servers for the network adapter. This is crucial for the Virtual IP behind <code>drhscit.org</code>.</li>
+                            <li>Installed essential roles and features via Server Manager (e.g., Web Server (IIS), .NET Framework).</li>
+                            <li>Installed preferred utilities: e.g., KeePass, Git for Windows, Visual Studio Code, PowerShell 7.</li>
+                            <li>Enabled Remote Desktop Protocol (RDP) for GUI access.</li>
+                            <li>Installed and configured OpenSSH for Windows for secure shell access.
+                                <ul class="list-disc list-inside ml-5 space-y-1">
+                                    <li>Added firewall rule for SSH (port 22).</li>
+                                    <li>Configured key-based authentication.</li>
+                                </ul>
+                            </li>
+                            <li>Performed initial Windows Updates.</li>
+                        </ul>
+                    </li>
+                </ol>
             </section>
         </div>
         
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+            <section>
+                <h2 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Phase 3: Web & Application Server Setup</h2>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                    <li><span class="font-semibold">Date:</span> [Date of application server setup]</li>
+                    <li><span class="font-semibold">Internet Information Services (IIS) Setup:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Installed IIS role with necessary components (e.g., ASP.NET, Application Development features).</li>
+                            <li>Created a new website for the proof-of-concept application.</li>
+                            <li>Configured website bindings (hostname for <code>drhscit.org</code>, IP, port 80/443).</li>
+                            <li>Set the physical path to the application's root directory.</li>
+                            <li>Configured an Application Pool for the application (e.g., .NET CLR version, identity).</li>
+                        </ul>
+                    </li>
+                    <li><span class="font-semibold">Application Deployment:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Cloned the full-stack web application source code from its Git repository to a designated folder on the server.</li>
+                            <li>Installed application dependencies (e.g., using NuGet for .NET, npm for Node.js front-end build tools if applicable).</li>
+                            <li>Configured application settings (e.g., <code>web.config</code> or <code>appsettings.json</code>) with database connection strings and other environment-specific values.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+            <section>
+                <h2 class="text-2xl font-semibold text-yellow-600 dark:text-yellow-400 mb-4">Phase 4: Database Setup (SQL Server Developer Edition)</h2>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                    <li><span class="font-semibold">Date:</span> [Date of database setup]</li>
+                    <li><span class="font-semibold">Database System:</span> SQL Server Developer Edition</li>
+                    <li><span class="font-semibold">Installation:</span> Downloaded and ran the SQL Server Developer Edition installer. Selected necessary features (Database Engine Services).</li>
+                    <li><span class="font-semibold">Configuration:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Configured SQL Server instance (default or named).</li>
+                            <li>Ensured SQL Server service was running.</li>
+                            <li>Enabled TCP/IP protocol for remote connections using SQL Server Configuration Manager.</li>
+                            <li>Configured Windows Firewall to allow traffic on the SQL Server port (default TCP 1433).</li>
+                            <li>Created a new database for the application.</li>
+                            <li>Created a SQL Server login/user for the application and granted necessary permissions to the database.</li>
+                            <li>Configured database authentication (Mixed Mode if SQL logins are used).</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+            <section>
+                <h2 class="text-2xl font-semibold text-red-600 dark:text-red-400 mb-4">Phase 5: Security Hardening & Best Practices</h2>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                    <li><span class="font-semibold">Date:</span> [Date of security configuration]</li>
+                    <li><span class="font-semibold">Actions:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Applied security baselines (e.g., Microsoft Security Baselines).</li>
+                            <li>Configured Windows Defender Antivirus and Firewall with appropriate rules and exclusions.</li>
+                            <li>Removed or disabled unnecessary Windows features and services.</li>
+                            <li>Implemented strong password policies.</li>
+                            <li>Configured User Account Control (UAC).</li>
+                            <li>Set up regular security audits and log reviews.</li>
+                            <li>Enabled HTTPS for the web application using an SSL/TLS certificate (e.g., self-signed for testing, or a CA-issued certificate for <code>drhscit.org</code>).</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+        </div>
 
-        <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-teal-600 dark:text-teal-400 mb-4">Step 6:  Deployment and Testing</h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
-                <li><span class="font-semibold">Date:</span> [Date of deployment]</li>
-                <li><span class="font-semibold">Deployment Method:</span> [e.g., Git pull, rsync, CI/CD pipeline]</li>
-                <li><span class="font-semibold">Testing:</span>
-                    <ul class="list-disc list-inside ml-5 space-y-1">
-                        <li>Performed basic functional testing.</li>
-                        <li>Tested database connectivity.</li>
-                        <li>Checked правильное routing and обращение to assets.</li>
-                        <li>(Optional) Performed load testing.</li>
-                        <li>(Optional) Checked logs for errors.</li>
-                    </ul>
-                </li>
-                <li><span class="font-semibold">Initial Deployment URL:</span> [The URL of the deployed application]</li>
-            </ol>
-        </section>
-         <section class="mb-8">
-            <h2 class="text-2xl font-semibold text-pink-600 dark:text-pink-400 mb-4">Step 7:  Ongoing Maintenance</h2>
-            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
-                <li><span class="font-semibold">Date:</span> [Date of last update]</li>
-                <li><span class="font-semibold">Maintenance Procedures:</span>
-                    <ul class="list-disc list-inside ml-5 space-y-1">
-                        <li> регулярные security updates of the underlying OS and installed packages.</li>
-                        <li> регулярные backups of the application data and database.</li>
-                        <li>Monitoring of server resources (CPU, memory, disk space).</li>
-                        <li>Log rotation and archiving.</li>
-                        <li>Application performance monitoring.</li>
-                    </ul>
-                </li>
-            </ol>
-        </section>
-    </div>
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+            <section>
+                <h2 class="text-2xl font-semibold text-teal-600 dark:text-teal-400 mb-4">Phase 6: Deployment, Testing & Documentation</h2>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                    <li><span class="font-semibold">Date:</span> [Date of deployment and testing]</li>
+                    <li><span class="font-semibold">Final Deployment & Testing:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Ensured the web application was accessible via the virtual IP and <code>drhscit.org</code>.</li>
+                            <li>Performed comprehensive functional testing of the full-stack application.</li>
+                            <li>Tested database connectivity from the application.</li>
+                            <li>Verified RDP and SSH access.</li>
+                            <li>Checked IIS and SQL Server logs for any errors.</li>
+                        </ul>
+                    </li>
+                    <li><span class="font-semibold">Documentation Publishing:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Created/updated documentation files (like this one).</li>
+                            <li>Committed documentation to the GitHub repository.</li>
+                            <li>Configured GitHub Pages to serve the documentation from the repository as a static website.</li>
+                            <li>Verified the documentation site was live and accessible via its <code>drhscit.org</code> subdomain (if applicable) or GitHub Pages URL.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <section>
+                <h2 class="text-2xl font-semibold text-pink-600 dark:text-pink-400 mb-4">Phase 7: Ongoing Maintenance Plan</h2>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                    <li><span class="font-semibold">Procedures Established:</span> [Date of establishing maintenance plan]</li>
+                    <li><span class="font-semibold">Maintenance Tasks:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Regularly apply Windows Updates and security patches for the OS and installed software (SQL Server, IIS, etc.).</li>
+                            <li>Schedule regular backups of the application data, IIS configuration, and SQL Server databases.</li>
+                            <li>Monitor server resources (CPU, memory, disk space, network I/O) using Performance Monitor or Windows Admin Center.</li>
+                            <li>Implement log rotation and archiving for IIS, SQL Server, and system event logs.</li>
+                            <li>Periodically review security logs and audit trails.</li>
+                            <li>Test disaster recovery procedures.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-10">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 CIT Documentation Team. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
