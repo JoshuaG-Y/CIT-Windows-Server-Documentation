@@ -1,26 +1,21 @@
 name: Deploy to Windows Server
+
 on:
   push:
     branches:
       - main
+
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
+      - name: Mark project folder as safe
+        run: git config --global --add safe.directory "C:/Projects/CIT-Windows-Server-Documentation"
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
       - name: Deploy to local folder
-        shell: powershell
         run: |
-          # Try to make sure the directory exists
-          if (-not (Test-Path "C:\Projects\CIT-Windows-Server-Documentation")) {
-            New-Item -ItemType Directory -Path "C:\Projects\CIT-Windows-Server-Documentation" -Force
-          }
-          
-          # Remove read-only attribute from all files
-          Get-ChildItem -Path "C:\Projects\CIT-Windows-Server-Documentation" -Recurse | ForEach-Object { $_.Attributes = $_.Attributes -band (-bnot [System.IO.FileAttributes]::ReadOnly) }
-          
-          # Change to the directory
-          Set-Location -Path "C:\Projects\CIT-Windows-Server-Documentation"
-          
-          # Use force option to overwrite local changes
-          git fetch origin main
-          git reset --hard origin/main
+          cd C:\Projects\CIT-Windows-Server-Documentation
+          git pull origin main
