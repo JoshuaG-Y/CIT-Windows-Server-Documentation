@@ -13,7 +13,8 @@ jobs:
         shell: powershell
         run: |
           # Configure Git to use your SSH key
-          git config --global core.sshCommand "ssh -i C:/Windows/ServiceProfiles/NetworkService/.ssh/id_ed25519 -F /dev/null"
+          git config --global core.sshCommand "ssh -i C:/Windows/ServiceProfiles/NetworkService/.ssh/id_ed25519 -o StrictHostKeyChecking=no"
+          git config --global --add safe.directory "C:/Projects/CIT-Windows-Server-Documentation"
 
           # Add GitHub to known hosts if needed
           if (!(Test-Path "C:\Windows\ServiceProfiles\NetworkService\.ssh\known_hosts")) {
