@@ -3,12 +3,15 @@ name: Deploy to Windows Server
 on:
   push:
     branches:
-      - main  # Or your deployment branch
+      - main
 
 jobs:
   deploy:
     runs-on: self-hosted
     steps:
+      - name: Mark project folder as safe
+        run: git config --global --add safe.directory "C:/Projects/CIT-Windows-Server-Documentation"
+
       - name: Checkout repo
         uses: actions/checkout@v3
 
