@@ -19,7 +19,7 @@
         <div class="container mx-auto px-4">
             <a href="index.html" class="text-sm hover:underline">&larr; Back to Home</a>
             <h1 class="text-3xl font-bold mt-2">Troubleshooting Windows Server 2025</h1>
-            <p class="text-sm">Common Issues and Solutions</p>
+            <p class="text-sm">Common Issues, Solutions, and Diagnostic Steps</p>
         </div>
     </header>
 
@@ -28,14 +28,22 @@
             <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">General Troubleshooting Steps</h2>
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300">
                 <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Check Event Viewer:</strong> Windows Event Viewer (<code>eventvwr.msc</code>) is your first stop. Look under "Windows Logs" (Application, Security, System) and "Applications and Services Logs" for specific errors.</li>
-                    <li><strong>Review Log Files:</strong> Many applications (IIS, SQL Server) have their own detailed log files. Check their respective documentation for log locations.</li>
-                    <li><strong>Verify Network Connectivity:</strong> Use <code>ping</code>, <code>tracert</code>, and <code>nslookup</code> to diagnose network issues. Check firewall settings (Windows Defender Firewall).</li>
-                    <li><strong>Check Service Status:</strong> Ensure necessary services (IIS, SQL Server, SSHD) are running using <code>services.msc</code> or PowerShell's <code>Get-Service</code>.</li>
-                    <li><strong>Restart Services/Server:</strong> Sometimes a simple restart of a service or the entire server can resolve transient issues.</li>
-                    <li><strong>Check Resource Usage:</strong> Use Task Manager or Resource Monitor to check CPU, memory, disk, and network usage. High usage can indicate performance bottlenecks.</li>
-                    <li><strong>Ensure Latest Updates:</strong> Install the latest Windows Updates and updates for all installed software.</li>
-                    <li><strong>Consult Documentation:</strong> Refer to official Microsoft documentation and community forums (TechNet, Stack Overflow).</li>
+                    <li><strong>Check Event Viewer:</strong> Windows Event Viewer (<code>eventvwr.msc</code>) is your first stop. Look under "Windows Logs" (Application, Security, System) and "Applications and Services Logs" (e.g., OpenSSH, IIS, specific application logs) for errors or warnings. Note Event IDs and sources.</li>
+                    <li><strong>Review Specific Log Files:</strong>
+                        <ul class="list-circle list-inside ml-4">
+                            <li>IIS Logs: <code>%SystemDrive%\inetpub\logs\LogFiles\W3SVC&lt;SiteID&gt;\</code> (e.g., <code>W3SVC1</code> for Default Web Site). Check for HTTP status codes.</li>
+                            <li>SQL Server Error Logs: <code>C:\Program Files\Microsoft SQL Server\MSSQLXX.YYYYY\MSSQL\Log\ERRORLOG</code> (replace <code>MSSQLXX.YYYYY</code> with your instance-specific path).</li>
+                            <li>Application-Specific Logs: Check your PoC application's documentation or code for its logging locations.</li>
+                            <li>OpenSSH Logs (if verbose logging enabled in sshd_config): Event Viewer under Applications and Services Logs &rarr; OpenSSH.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Verify Network Connectivity:</strong> Use <code>ping</code>, <code>tracert [hostname/IP]</code>, <code>nslookup [hostname]</code>, <code>Test-NetConnection [hostname] -Port [portnumber]</code> (PowerShell). Check firewall settings (Windows Defender Firewall with Advanced Security - <code>wf.msc</code>).</li>
+                    <li><strong>Check Service Status:</strong> Ensure necessary services are running using <code>services.msc</code> or PowerShell's <code>Get-Service [ServiceName]</code>. Key services: <code>W3SVC</code> (IIS), <code>MSSQLSERVER</code> or your SQL instance name, <code>sshd</code>.</li>
+                    <li><strong>Restart Services/Server:</strong> Sometimes a simple restart of a specific service or the entire server can resolve transient issues. Do this methodically.</li>
+                    <li><strong>Check Resource Usage:</strong> Use Task Manager (<code>taskmgr</code>) or Resource Monitor (<code>resmon</code>) to check CPU, memory, disk I/O, and network usage. High usage can indicate performance bottlenecks or runaway processes.</li>
+                    <li><strong>Ensure Latest Updates:</strong> Install the latest Windows Updates and updates for all installed software (SQL Server CUs, application dependencies).</li>
+                    <li><strong>Isolate the Problem:</strong> Can you reproduce the issue consistently? Does it affect all users or specific ones? Did it start after a recent change?</li>
+                    <li><strong>Consult Documentation & Online Resources:</strong> Refer to official Microsoft documentation, vendor documentation for specific software, and community forums (Microsoft Q&A, Stack Overflow, Spiceworks). Search using specific error messages and event IDs.</li>
                 </ul>
             </div>
         </section>
@@ -44,30 +52,36 @@
             <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Specific Issue Troubleshooting</h2>
 
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 mb-6">
-                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">1. Windows Server 2025 Installation Issues</h3>
+                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">1. Windows Server 2025 Installation & Boot Issues</h3>
                 <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Problem:</strong> Installation fails or hangs.
+                    <li><strong>Problem:</strong> Installation fails, hangs, or BSODs.
                         <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Insufficient hardware resources (RAM, CPU, disk space), incompatible hardware, corrupted installation media, incorrect BIOS/UEFI settings.</li>
-                            <li><strong>Solution:</strong> Verify hardware meets minimum requirements. Check CIT hardware compatibility list. Re-download installation media or try a different USB/DVD. Ensure BIOS/UEFI is set to boot from the correct device and AHCI mode for SATA is enabled.</li>
+                            <li><strong>Cause:</strong> Insufficient hardware resources (RAM, CPU, disk space), incompatible hardware/drivers, corrupted installation media, incorrect BIOS/UEFI settings (e.g., boot order, SATA mode, Secure Boot issues).</li>
+                            <li><strong>Solution:</strong> Verify hardware meets minimum requirements for Windows Server 2025. Check CIT hardware compatibility. Re-download/re-create installation media. Reset BIOS/UEFI to defaults, then configure boot order and ensure AHCI mode for SATA. Temporarily disable Secure Boot if suspected. Check for BIOS/UEFI updates for the CIT hardware.</li>
                         </ul>
                     </li>
-                    <li><strong>Problem:</strong> Drivers not found during or after installation.
+                    <li><strong>Problem:</strong> Drivers not found during or after installation (e.g., network, storage controller).
                         <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Missing or incorrect drivers for specific CIT hardware components.</li>
-                            <li><strong>Solution:</strong> Download the latest drivers from the hardware manufacturer's website specifically for Windows Server 2025. Use Device Manager to identify missing drivers and update them.</li>
+                            <li><strong>Cause:</strong> Windows Server 2025 lacks built-in drivers for specific CIT hardware.</li>
+                            <li><strong>Solution:</strong> Download latest drivers from hardware manufacturer's website (specifically for Windows Server 2025 or compatible version like Windows 11). Load drivers during installation (if prompted for storage controller) or install via Device Manager post-installation.</li>
                         </ul>
                     </li>
                 </ul>
             </div>
 
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 mb-6">
-                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">2. Virtual IP and drhscit.org Configuration</h3>
+                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">2. Virtual IP (drhscit.org) & Network Connectivity</h3>
                 <ul class="list-disc list-inside space-y-2">
                     <li><strong>Problem:</strong> Server not accessible via <code>drhscit.org</code> or its virtual IP.
                         <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Incorrect DNS configuration for <code>drhscit.org</code>. Incorrect network adapter settings on the server (IP, subnet, gateway, DNS). Firewall blocking traffic. Network routing issues.</li>
-                            <li><strong>Solution:</strong> Verify DNS A record for <code>drhscit.org</code> points to the correct virtual IP. Check server's IP configuration (<code>ipconfig /all</code>). Ensure Windows Firewall or any network firewall allows traffic on necessary ports (e.g., 80, 443). Work with network administrators to verify routing and NAT/PAT configurations for the virtual IP.</li>
+                            <li><strong>Cause:</strong> Incorrect DNS configuration for <code>drhscit.org</code> (external DNS). Incorrect static IP settings on server (IP, subnet, gateway, DNS). Windows Firewall blocking traffic. School IT firewall/NAT/PAT rules incorrect or missing. Routing issues.</li>
+                            <li><strong>Solution:</strong> Verify external DNS A record for <code>drhscit.org</code> points to the correct VIP. On server, check <code>ipconfig /all</code>. Ensure Windows Firewall allows traffic on necessary ports (80, 443, etc.). Work with School IT to verify their firewall rules and NAT/PAT from VIP to server's static IP. Use <code>tracert drhscit.org</code> from an external machine.</li>
+                        </ul>
+                    </li>
+                     <li><strong>Problem:</strong> Internal network resources not accessible from server, or vice-versa.
+                        <ul class="list-circle list-inside ml-4">
+                            <li><strong>Cause:</strong> Incorrect server IP/subnet/gateway. Incorrect DNS server settings on server. Firewall on server or target machine blocking.</li>
+                            <li><strong>Solution:</strong> Verify server's network configuration. Test DNS resolution (<code>nslookup internalresource.school.lan</code>). Use <code>ping</code> and <code>Test-NetConnection</code>. Check firewalls.</li>
                         </ul>
                     </li>
                 </ul>
@@ -76,130 +90,121 @@
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 mb-6">
                 <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">3. RDP and SSH Accessibility</h3>
                 <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Problem:</strong> Cannot connect via RDP.
+                    <li><strong>Problem:</strong> Cannot connect via RDP. Error messages like "Remote Desktop can't connect..."
                         <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> RDP disabled on the server. Windows Firewall blocking RDP port (TCP 3389). Network connectivity issues. Incorrect credentials. Remote Desktop Services not running. Network Level Authentication (NLA) issues.</li>
-                            <li><strong>Solution:</strong> Ensure RDP is enabled (System Properties -> Remote). Check Windows Firewall rules for Remote Desktop. Verify network path using <code>ping</code> and <code>tracert</code>. Double-check username and password. Ensure "Remote Desktop Services" and "Remote Desktop Services UserMode Port Redirector" services are running. If NLA is an issue, try connecting from a domain-joined machine or temporarily disable NLA for testing (not recommended for production).</li>
+                            <li><strong>Cause:</strong> RDP disabled on server. Windows Firewall blocking RDP port (TCP 3389). Network connectivity issues. Incorrect credentials. Remote Desktop Services not running. Network Level Authentication (NLA) issues. Licensing issues (for RDS roles, not typical for admin RDP).</li>
+                            <li><strong>Solution:</strong> Ensure RDP is enabled (System Properties &rarr; Remote). Check Windows Firewall rules for "Remote Desktop" group. Verify network path. Double-check username (<code>DOMAIN\User</code> or <code>HOSTNAME\User</code>) and password. Ensure "Remote Desktop Services" and "Remote Desktop Services UserMode Port Redirector" services are running. If NLA is an issue, try connecting from a domain-joined machine or temporarily disable NLA for testing (not recommended for production). Check Event Viewer (System log for TermService, Security log for logon failures).</li>
                         </ul>
                     </li>
-                    <li><strong>Problem:</strong> Cannot connect via SSH.
+                    <li><strong>Problem:</strong> Cannot connect via SSH. Connection timed out or refused. Authentication failures.
                         <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> OpenSSH Server feature not installed or configured. SSH service (<code>sshd</code>) not running. Windows Firewall blocking SSH port (TCP 22). Incorrect SSH key configuration or password.</li>
-                            <li><strong>Solution:</strong> Install OpenSSH Server (Settings -> Apps -> Optional features). Start the <code>sshd</code> service (<code>Start-Service sshd</code>, <code>Set-Service sshd -StartupType Automatic</code>). Add a firewall rule for port 22 (<code>New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22</code>). Verify SSH key paths and permissions in <code>%programdata%\ssh\sshd_config</code> if using key-based authentication. Check <code>sshd</code> logs in Event Viewer (Applications and Services Logs -> OpenSSH).</li>
+                            <li><strong>Cause:</strong> OpenSSH Server feature not installed or <code>sshd</code> service not running/misconfigured. Windows Firewall blocking SSH port (TCP 22). Incorrect SSH key configuration/permissions (if using key auth). Incorrect password (if using password auth). <code>sshd_config</code> errors.</li>
+                            <li><strong>Solution:</strong> Verify OpenSSH Server installed and <code>sshd</code> service is running. Check Windows Firewall rule for port 22. For key auth: verify <code>authorized_keys</code> file path (<code>%USERPROFILE%\.ssh\authorized_keys</code>) and permissions (only user and SYSTEM should have access). For password auth: ensure it's enabled in <code>sshd_config</code> (<code>PasswordAuthentication yes</code>). Check <code>sshd</code> logs in Event Viewer (Applications and Services Logs &rarr; OpenSSH &rarr; Operational). Test SSH locally on server: <code>ssh localhost</code>.</li>
                         </ul>
                     </li>
                 </ul>
             </div>
 
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 mb-6">
-                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">4. IIS and SQL Server (Developer Edition) Issues</h3>
+                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">4. IIS and Web Application Issues</h3>
                 <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Problem:</strong> Web application on IIS not accessible or shows errors (e.g., HTTP 500, 403, 404).
+                    <li><strong>Problem:</strong> Website shows HTTP errors (401, 403, 404, 500, 502, 503).
                         <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> IIS not installed or configured correctly. Application pool identity permissions issues. Incorrect web.config settings. Missing application dependencies. Firewall blocking HTTP/HTTPS ports. DNS issues.</li>
-                            <li><strong>Solution:</strong> Verify IIS role and required features are installed. Check application pool identity has necessary permissions to application files and database. Review IIS logs (<code>%SystemDrive%\inetpub\logs\LogFiles</code>). Enable detailed error messages in IIS for easier debugging. Ensure bindings are correct (IP address, port, hostname). Check Windows Firewall.</li>
+                            <li><strong>401 Unauthorized:</strong> Authentication issue. Check IIS authentication settings (Anonymous, Basic, Windows). Check permissions on files/folders for the IUSR or Application Pool identity.</li>
+                            <li><strong>403 Forbidden:</strong> Permissions issue on files/folders. Directory browsing not enabled and no default document. IP address restrictions. SSL required but not used.</li>
+                            <li><strong>404 Not Found:</strong> File or resource doesn't exist at the requested path. Incorrect URL. IIS handler mappings missing.</li>
+                            <li><strong>500 Internal Server Error:</strong> Application code error. Misconfigured <code>web.config</code>. Application pool crashing. Enable detailed errors in IIS for more info (temporarily for debugging). Check application logs and Event Viewer (Application log).</li>
+                            <li><strong>502 Bad Gateway:</strong> IIS acting as a reverse proxy (e.g., ARR) and backend server is unavailable or returning an error.</li>
+                            <li><strong>503 Service Unavailable:</strong> Application Pool is stopped or has too many errors. Check Application Pool status in IIS Manager. Check Event Viewer.</li>
+                            <li><strong>Solution:</strong> Check IIS logs. Enable Failed Request Tracing (FREB) in IIS for detailed diagnostics. Verify Application Pool identity and its permissions. Validate <code>web.config</code>. Test application components individually.</li>
                         </ul>
                     </li>
-                    <li><strong>Problem:</strong> Cannot connect to SQL Server Developer Edition.
+                    <li><strong>Problem:</strong> Application Pool crashing or stopping.
                         <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> SQL Server service not running. SQL Server not configured for remote connections. TCP/IP protocol disabled in SQL Server Configuration Manager. Windows Firewall blocking SQL Server port (default TCP 1433). Incorrect connection string. SQL Server Browser service not running (if using named instances).</li>
-                            <li><strong>Solution:</strong> Ensure "SQL Server (MSSQLSERVER)" service is running. Use SQL Server Configuration Manager to enable TCP/IP protocol and check the port. Add a firewall rule for the SQL Server port. Verify connection string details (server name, database, authentication). Ensure SQL Server Browser service is running if connecting to a named instance. Check SQL Server error logs.</li>
-                        </ul>
-                    </li>
-                     <li><strong>Problem:</strong> Full-stack application database connectivity issues.
-                        <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Incorrect database connection string in the application. SQL Server user permissions insufficient. Network issues between web server and database server (if separate).</li>
-                            <li><strong>Solution:</strong> Double-check the connection string. Ensure the SQL login used by the application has appropriate permissions (db_datareader, db_datawriter, etc.) on the target database. Test connectivity from the web server to the SQL server using SQL Server Management Studio (SSMS) or a UDL file.</li>
+                            <li><strong>Cause:</strong> Unhandled exceptions in application code. Memory leaks. Configuration errors. Rapid-fail protection triggered.</li>
+                            <li><strong>Solution:</strong> Check Event Viewer (Application and System logs) for errors related to WAS (Windows Process Activation Service) and the application itself. Configure Application Pool recycling settings. Debug application code.</li>
                         </ul>
                     </li>
                 </ul>
             </div>
 
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 mb-6">
-                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">5. KeePass Credential Manager Issues</h3>
+                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">5. SQL Server (Developer Edition) Issues</h3>
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong>Problem:</strong> Cannot connect to SQL Server (e.g., from SSMS or application). Errors like "A network-related or instance-specific error occurred..."
+                        <ul class="list-circle list-inside ml-4">
+                            <li><strong>Cause:</strong> SQL Server service not running. SQL Server not configured for remote connections (TCP/IP disabled). Windows Firewall blocking SQL Server port (default TCP 1433). Incorrect server name/instance name in connection string. SQL Server Browser service not running (if using named instances and dynamic ports).</li>
+                            <li><strong>Solution:</strong> Ensure "SQL Server (YOUR_INSTANCE_NAME)" service is running. Use SQL Server Configuration Manager to enable TCP/IP protocol for your instance and check the port. Add a firewall rule for the SQL Server port. Verify connection string (e.g., <code>ServerName\InstanceName</code> or <code>ServerName,Port</code>). Ensure SQL Server Browser service is running if needed. Check SQL Server error logs.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Problem:</strong> SQL Login failures (Error 18456).
+                        <ul class="list-circle list-inside ml-4">
+                            <li><strong>Cause:</strong> Incorrect username/password. SQL login disabled or password expired. SQL Server not in Mixed Mode (if using SQL logins). Login not mapped to a database user or lacks permissions.</li>
+                            <li><strong>Solution:</strong> Verify credentials. Check login properties in SSMS (status, password policy). Ensure Mixed Mode authentication if using SQL logins. Grant necessary database permissions to the user. Check SQL Server error log for more detailed state numbers related to error 18456.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 mb-6">
+                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">6. Permissions Issues (General)</h3>
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong>Problem:</strong> Application fails to read/write files, access registry, or connect to database due to "Access Denied" or similar errors.
+                        <ul class="list-circle list-inside ml-4">
+                            <li><strong>Cause:</strong> The identity running the process (e.g., IIS Application Pool identity, service account, logged-in user) lacks the necessary NTFS permissions on files/folders, registry permissions, or database permissions.</li>
+                            <li><strong>Solution:</strong>
+                                <ol class="list-decimal list-inside ml-6">
+                                    <li>Identify the account: Determine which user account is performing the action (e.g., for IIS, it's the AppPool identity like <code>IIS APPPOOL\YourAppPoolName</code>). Use Process Monitor (ProcMon) from Sysinternals to see exact account and resource being accessed.</li>
+                                    <li>Check NTFS Permissions: Right-click folder/file &rarr; Properties &rarr; Security. Grant necessary permissions (e.g., Read, Read & Execute, Modify, Write) to the identified account. Apply Principle of Least Privilege.</li>
+                                    <li>Check SQL Server Permissions: In SSMS, check server-level roles and database-level user mappings and permissions for the application's login.</li>
+                                    <li>Check Registry Permissions: Use <code>regedit</code>, navigate to the key, right-click &rarr; Permissions. (Modify with extreme caution).</li>
+                                    <li>Event Viewer: Look for security audit failures (if auditing is enabled).</li>
+                                </ol>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 mb-6">
+                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">7. KeePass Credential Manager Issues</h3>
                 <ul class="list-disc list-inside space-y-2">
                     <li><strong>Problem:</strong> KeePass fails to install or run.
                         <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Corrupted download. .NET Framework issues (KeePass 2.x requires .NET). Insufficient user permissions for installation.</li>
-                            <li><strong>Solution:</strong> Re-download KeePass from the official website. Ensure the required .NET Framework version is installed and updated. Run the installer as an administrator.</li>
+                            <li><strong>Cause:</strong> Corrupted download. .NET Framework issues (KeePass 2.x requires .NET). Insufficient user permissions for installation. Antivirus interference.</li>
+                            <li><strong>Solution:</strong> Re-download KeePass from official site. Ensure required .NET Framework version is installed/updated (<code>Get-WindowsFeature Net-Framework-Core</code>). Run installer as administrator. Temporarily disable AV for installation if suspected.</li>
                         </ul>
                     </li>
-                    <li><strong>Problem:</strong> Cannot open KeePass database.
+                    <li><strong>Problem:</strong> Cannot open KeePass database (.kdbx).
                         <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Incorrect master password or key file. Corrupted database file. File permissions issues.</li>
-                            <li><strong>Solution:</strong> Carefully verify the master password and key file location/integrity. Try opening a backup of the database if available. Ensure you have read/write permissions to the database file and its folder.</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 mb-6">
-                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">6. Recommended Software Issues</h3>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Problem:</strong> PowerShell 7 installation or execution issues.
-                        <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Incorrect architecture downloaded (x64 vs Arm64). Execution policy restrictions.</li>
-                            <li><strong>Solution:</strong> Download the correct installer for your server's architecture. Check PowerShell execution policy (<code>Get-ExecutionPolicy</code>) and set it appropriately if needed (e.g., <code>Set-ExecutionPolicy RemoteSigned</code>).</li>
-                        </ul>
-                    </li>
-                    <li><strong>Problem:</strong> Windows Admin Center connectivity issues.
-                        <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> WAC gateway not running or misconfigured. Firewall blocking WAC ports. WinRM not configured correctly on managed servers. TrustedHosts issues.</li>
-                            <li><strong>Solution:</strong> Ensure WAC service is running. Check firewall rules on both WAC gateway and managed server. Configure WinRM on managed servers (<code>winrm quickconfig</code>). Add managed server FQDNs or IPs to TrustedHosts on the WAC gateway if not domain-joined (<code>Set-Item WSMan:\localhost\Client\TrustedHosts -Value 'server.fqdn.com' -Force</code>).</li>
-                        </ul>
-                    </li>
-                     <li><strong>Problem:</strong> Git for Windows command line or GUI issues.
-                        <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Incorrect installation options (e.g., PATH integration). SSH key issues for remote repositories. Proxy configuration.</li>
-                            <li><strong>Solution:</strong> Reinstall Git, paying attention to PATH setup. Configure SSH keys correctly for services like GitHub/GitLab. Configure Git proxy settings if behind a corporate proxy (<code>git config --global http.proxy http://proxyuser:proxypwd@proxy.server.com:8080</code>).</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 mb-6">
-                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">7. Security Best Practices Implementation</h3>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Problem:</strong> Difficulty applying specific security configurations.
-                        <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Lack of understanding of Group Policy Objects (GPOs), Local Security Policy, or specific security tool configurations. Conflicts with existing settings.</li>
-                            <li><strong>Solution:</strong> Consult Microsoft's security baselines for Windows Server 2025. Use tools like Security Compliance Manager (SCM) or Microsoft Security Configuration Toolkit. Test changes in a non-production environment first. Use <code>gpresult /h report.html</code> to check applied GPOs.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Problem:</strong> Windows Defender Antivirus or Firewall blocking legitimate applications.
-                        <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Overly restrictive rules or false positives.</li>
-                            <li><strong>Solution:</strong> Create specific exclusions for application executables or folders in Windows Defender Antivirus. Create specific inbound/outbound rules in Windows Defender Firewall for necessary application ports and protocols.</li>
+                            <li><strong>Cause:</strong> Incorrect master password or key file. Corrupted database file. File permissions issues (cannot read/write .kdbx file). KeePass version incompatibility.</li>
+                            <li><strong>Solution:</strong> Carefully verify master password (case-sensitive) and key file path/integrity. Try opening a backup of the database. Ensure user has read/write permissions to the .kdbx file and its folder. Ensure KeePass version matches the one used to create/save the database.</li>
                         </ul>
                     </li>
                 </ul>
             </div>
 
             <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300">
-                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">8. Documentation Publishing to drhscit.org (GitHub Pages)</h3>
+                <h3 class="text-xl font-semibold mb-2 text-red-500 dark:text-red-400">8. Documentation Publishing (GitHub Pages)</h3>
                 <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Problem:</strong> Changes not appearing on the GitHub Pages site.
+                    <li><strong>Problem:</strong> Changes not appearing on the GitHub Pages site (<code>drhscit.org</code> subdomain or <code>*.github.io</code>).
                         <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Git changes not committed and pushed to the correct branch (e.g., <code>main</code>, <code>gh-pages</code>). GitHub Actions build/deployment failure. Caching issues in the browser or CDN. Incorrect GitHub Pages settings in the repository.</li>
-                            <li><strong>Solution:</strong> Ensure all local changes are committed (<code>git add .</code>, <code>git commit -m "message"</code>) and pushed (<code>git push origin <branch-name></code>). Check the "Actions" tab in your GitHub repository for build logs. Clear browser cache or try incognito mode. Verify GitHub Pages source branch and folder settings in repository settings.</li>
-                        </ul>
-                    </li>
-                    <li><strong>Problem:</strong> Static site generator (if used) errors.
-                        <ul class="list-circle list-inside ml-4">
-                            <li><strong>Cause:</strong> Incorrect configuration files for the generator (e.g., Jekyll, Hugo). Syntax errors in content files. Missing dependencies.</li>
-                            <li><strong>Solution:</strong> Check the static site generator's documentation for common errors. Validate configuration files. Build the site locally to identify errors before pushing to GitHub.</li>
+                            <li><strong>Cause:</strong> Git changes not committed AND pushed to the correct branch configured for GitHub Pages (e.g., `main`, `gh-pages`). GitHub Actions build/deployment failure (check "Actions" tab in repo). Browser/CDN caching. Incorrect GitHub Pages settings (source branch/folder). Custom domain DNS issues.</li>
+                            <li><strong>Solution:</strong> Ensure <code>git add .</code>, <code>git commit -m "message"</code>, <code>git push origin <branch-name></code>. Check GitHub Actions logs. Clear browser cache/try incognito. Verify GitHub Pages settings in repository. For custom domain, verify CNAME/A records are correct and propagated.</li>
                         </ul>
                     </li>
                 </ul>
             </div>
-
         </section>
     </main>
 
-    <footer class="bg-gray-800 text-white py-6">
+    <footer class="bg-gray-800 text-white py-6 mt-10">
         <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2025 CIT Documentation Team. All rights reserved.</p>
+            <p>&copy; <span id="year"></span> CIT Documentation Team. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>

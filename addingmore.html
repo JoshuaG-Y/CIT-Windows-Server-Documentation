@@ -21,71 +21,177 @@
         <div class="container mx-auto px-4">
             <a href="index.html" class="text-sm hover:underline">&larr; Back to Home</a>
             <h1 class="text-3xl font-bold mt-2">Windows Server 2025 Setup Guide</h1>
-            <p class="text-sm">Published on drhscit.org</p>
+            <p class="text-sm">Step-by-step instructions for initial server configuration.</p>
         </div>
     </header>
 
     <main class="container mx-auto px-4 py-8">
         <section class="mb-8">
-            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Requirements</h2>
-            <ul class="list-disc list-inside bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300">
-                <li class="mb-2">Windows Server 2025 installed and running on CIT Hardware</li>
-                <li class="mb-2">Virtual IP behind <code>drhscit.org</code></li>
-                <li class="mb-2">Accessible via RDP and SSH</li>
-                <li class="mb-2">Proof of concept full stack web application running on IIS and SQL Server (Developer Edition)</li>
-                <li class="mb-2">Install KeePass credential manager</li>
-                <li class="mb-2">Recommendations for any useful software</li>
-                <li class="mb-2">Secured following best practices</li>
-                <li>Documentation published to <code>drhscit.org</code> as a static website/GitHub Pages site (must sync with GitHub)</li>
+            <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Core Requirements Checklist</h2>
+            <ul class="list-disc list-inside bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-2">
+                <li>Windows Server 2025 (Standard Edition with Desktop Experience) installed and running on designated CIT Hardware.</li>
+                <li>Server configured with a static IP address.</li>
+                <li>Virtual IP behind <code>drhscit.org</code> configured and functional (requires coordination with School IT).</li>
+                <li>Server accessible via Remote Desktop Protocol (RDP).</li>
+                <li>Server accessible via Secure Shell (SSH).</li>
+                <li>Proof of concept full stack web application deployed and running on IIS.</li>
+                <li>SQL Server (Developer Edition) installed, configured, and accessible by the web application.</li>
+                <li>KeePass credential manager installed and a secure database created.</li>
+                <li>Server secured following initial best practices (see Security Hardening Guide for full details).</li>
+                <li>This documentation published to <code>drhscit.org</code> as a static website/GitHub Pages site (synced with GitHub).</li>
             </ul>
         </section>
 
         <section class="mb-8">
             <h2 class="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Setup Instructions</h2>
-            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300">
-                <div class="mb-6">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-gray-700 dark:text-gray-300 space-y-6">
+                <div>
                     <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">1. Install Windows Server 2025</h3>
-                    <p>Ensure that Windows Server 2025 is installed on CIT hardware. Follow the official installation guide provided by Microsoft.</p>
-                </div>
-
-                <div class="mb-6">
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">2. Configure Virtual IP</h3>
-                    <p>Set up a virtual IP address behind <code>drhscit.org</code>. Use your network configuration tools to assign the IP.</p>
-                </div>
-
-                <div class="mb-6">
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">3. Enable RDP and SSH</h3>
-                    <p>Enable Remote Desktop Protocol (RDP) and Secure Shell (SSH) access for remote management. Ensure proper firewall rules are in place.</p>
-                </div>
-
-                <div class="mb-6">
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">4. Deploy Proof of Concept Application</h3>
-                    <p>Deploy a full-stack web application on IIS and SQL Server (Developer Edition). Test the application to ensure it is functional.</p>
-                </div>
-
-                <div class="mb-6">
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">5. Install KeePass</h3>
-                    <p>Download and install KeePass credential manager to securely store and manage credentials.</p>
-                </div>
-
-                <div class="mb-6">
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">6. Recommended Software</h3>
-                    <ul class="list-disc list-inside ml-4">
-                        <li>PowerShell 7</li>
-                        <li>Windows Admin Center</li>
-                        <li>Visual Studio Code</li>
-                        <li>Git for Windows</li>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>Install Windows Server 2025 (Standard Edition with Desktop Experience recommended for GUI management) on the designated CIT hardware.</li>
+                        <li>During installation, ensure correct disk partitioning and formatting.</li>
+                        <li>Post-installation, install any necessary drivers for CIT hardware components via Device Manager or manufacturer websites. Refer to CIT hardware documentation for specific driver sources if needed.</li>
+                        <li>Perform initial Windows Updates.</li>
+                        <li>Set server hostname and timezone. PowerShell: <code>Set-TimeZone -Id "Eastern Standard Time"</code>.</li>
                     </ul>
                 </div>
 
-                <div class="mb-6">
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">7. Secure the Server</h3>
-                    <p>Follow best practices for securing Windows Server, including enabling Windows Defender, configuring firewalls, and applying security updates.</p>
+                <div>
+                    <h3 class="text-xl font-semibold mt-4 mb-2 text-gray-800 dark:text-white">2. Configure Network and Virtual IP</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>Configure a static IP address, subnet mask, default gateway, and DNS servers for the server's network adapter.</li>
+                        <li><strong>Virtual IP for <code>drhscit.org</code>:</strong> This step requires coordination with the School IT Department. They will need to:
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Assign a Virtual IP (VIP) address.</li>
+                                <li>Configure Network Address Translation (NAT/PAT) rules on the school's main firewall to forward traffic from the VIP (e.g., ports 80, 443) to the server's static IP.</li>
+                                <li>Create/update DNS A records for <code>drhscit.org</code> (and any subdomains) to point to the VIP.</li>
+                            </ul>
+                        </li>
+                        <li>Verify connectivity to the internet and internal network resources.</li>
+                        <li><em>(Refer to the detailed Network Configuration Guide for more advanced settings and diagrams - To be created)</em></li>
+                    </ul>
                 </div>
 
                 <div>
-                    <h3 class="text-xl font-semibold mb-2 text-gray-800 dark:text-white">8. Publish Documentation</h3>
-                    <p>Publish this documentation to <code>drhscit.org</code> as a static website using GitHub Pages. Ensure the site syncs with the GitHub repository.</p>
+                    <h3 class="text-xl font-semibold mt-4 mb-2 text-gray-800 dark:text-white">3. Enable RDP and SSH Access</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li><strong>RDP (Remote Desktop Protocol):</strong>
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Enable Remote Desktop: System Properties &rarr; Remote tab &rarr; Allow remote connections to this computer.</li>
+                                <li>Ensure Network Level Authentication (NLA) is enabled for enhanced security.</li>
+                                <li>Verify Windows Firewall allows RDP traffic (TCP port 3389). It's usually enabled by default when you enable RDP.</li>
+                            </ul>
+                        </li>
+                        <li><strong>SSH (Secure Shell):</strong>
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Install OpenSSH Server: Settings &rarr; Apps &rarr; Optional features &rarr; Add a feature &rarr; Search for "OpenSSH Server" and install.</li>
+                                <li>Start and set the SSH service to automatic:
+                                    <code class="block bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm my-1">Start-Service sshd</code>
+                                    <code class="block bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm my-1">Set-Service -Name sshd -StartupType 'Automatic'</code>
+                                </li>
+                                <li>Configure Windows Firewall for SSH (TCP port 22):
+                                    <code class="block bg-gray-200 dark:bg-gray-700 p-2 rounded text-sm my-1">New-NetFirewallRule -Name sshd -DisplayName 'OpenSSH Server (sshd)' -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22</code>
+                                </li>
+                                <li>Consider configuring key-based authentication for improved security over passwords. (Edit <code>$env:ProgramData\ssh\sshd_config</code>).</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold mt-4 mb-2 text-gray-800 dark:text-white">4. Install and Configure IIS & SQL Server</h3>
+                     <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li><strong>Install IIS (Internet Information Services):</strong>
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Use Server Manager &rarr; Add Roles and Features. Select "Web Server (IIS)" role.</li>
+                                <li>Ensure necessary role services are selected, especially under "Application Development" (e.g., ASP.NET 4.x, or others depending on your PoC application stack). Also include "Management Tools" &rarr; "IIS Management Console".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Install SQL Server (Developer Edition):</strong>
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Download SQL Server Developer Edition from Microsoft.</li>
+                                <li>Run the installer, choose a "Custom" installation.</li>
+                                <li>Select "Database Engine Services" as a minimum. Configure instance name (default MSSQLSERVER or a named instance).</li>
+                                <li>Set authentication mode (Windows Authentication or Mixed Mode if SQL logins are needed). Assign a strong 'sa' password if using Mixed Mode.</li>
+                                <li>Post-installation, use "SQL Server Configuration Manager" to ensure TCP/IP protocol is enabled for your instance and note the port (default 1433).</li>
+                                <li>Configure Windows Firewall to allow traffic on the SQL Server port.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold mt-4 mb-2 text-gray-800 dark:text-white">5. Deploy Proof of Concept Full Stack Web Application</h3>
+                    <p>This section provides a high-level overview. <em>(Refer to the detailed Application Deployment Guide for comprehensive steps specific to your application stack - To be created)</em></p>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>Clone your application's source code from its Git repository to a folder on the server (e.g., <code>C:\inetpub\wwwroot\YourAppName</code>).</li>
+                        <li>Install application dependencies (e.g., NuGet packages for .NET, npm modules for Node.js front-ends).</li>
+                        <li>Configure application settings (e.g., <code>web.config</code> or <code>appsettings.json</code>) with the correct database connection string (pointing to your local SQL Server instance), API keys, etc.</li>
+                        <li>In IIS Manager:
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Create a new website or use the Default Web Site.</li>
+                                <li>Set the physical path to your application's root folder.</li>
+                                <li>Configure bindings: Set hostname to <code>drhscit.org</code> (or a specific subdomain), select the server's static IP, and set ports (80 for HTTP, 443 for HTTPS).</li>
+                                <li>Create/configure an Application Pool. Set the .NET CLR version if applicable. Ensure the Application Pool Identity has necessary file system permissions to the application folder and potentially database access.</li>
+                            </ul>
+                        </li>
+                        <li>Create the application's database and schema in SQL Server. Grant necessary permissions to the SQL login used by your application.</li>
+                        <li>Test the application thoroughly by accessing it via <code>http://drhscit.org</code> (and HTTPS once SSL is configured).</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold mt-4 mb-2 text-gray-800 dark:text-white">6. Install KeePass Credential Manager</h3>
+                     <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>Download KeePass (e.g., KeePass 2.x Professional Edition) from the official website.</li>
+                        <li>Install KeePass.</li>
+                        <li>Create a new KeePass database (`.kdbx` file).
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Choose a strong, unique master password. Consider using a key file in addition for enhanced security.</li>
+                                <li>Store the KeePass database file in a secure, regularly backed-up location (e.g., a dedicated, restricted folder on a data drive).</li>
+                            </ul>
+                        </li>
+                        <li>Use KeePass to store all sensitive credentials for the server (administrator passwords, service account passwords, database passwords, API keys, etc.).</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold mt-4 mb-2 text-gray-800 dark:text-white">7. Recommended Additional Software</h3>
+                    <ul class="list-disc list-inside ml-4">
+                        <li><strong>PowerShell 7:</strong> Install for the latest features and cross-platform compatibility.</li>
+                        <li><strong>Windows Admin Center:</strong> Install on a management workstation or the server itself (if appropriate for your security model) for web-based server management.</li>
+                        <li><strong>Visual Studio Code:</strong> Useful for editing configuration files, scripts, and application code directly on the server if needed.</li>
+                        <li><strong>Git for Windows:</strong> For managing application code and documentation directly on the server.</li>
+                        <li><strong>7-Zip or NanaZip:</strong> For robust file archiving and extraction.</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold mt-4 mb-2 text-gray-800 dark:text-white">8. Initial Server Security</h3>
+                    <p>These are initial critical steps. <em>(Refer to the comprehensive Security Hardening Guide for detailed procedures and advanced configurations - To be created)</em></p>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>Change the default Administrator password to a strong, unique password (store in KeePass).</li>
+                        <li>Ensure Windows Updates are current and configure automatic updates.</li>
+                        <li>Review and configure Windows Defender Firewall: Ensure rules for RDP, SSH, HTTP/S, SQL Server are correctly in place and deny unnecessary inbound traffic.</li>
+                        <li>Disable or remove any unnecessary Windows roles and features.</li>
+                        <li>Review User Account Control (UAC) settings.</li>
+                        <li>Configure an SSL/TLS certificate for your website on IIS for HTTPS (e.g., using Let's Encrypt via a tool like Certify The Web, or a certificate from the school's CA).</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold mt-4 mb-2 text-gray-800 dark:text-white">9. Publish Documentation</h3>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li>Ensure this documentation (all HTML files, images, etc.) is committed and pushed to your team's GitHub repository.</li>
+                        <li>Configure GitHub Pages for the repository:
+                            <ul class="list-circle list-inside ml-6">
+                                <li>Go to Repository Settings &rarr; Pages.</li>
+                                <li>Select the source branch (e.g., `main` or `gh-pages`) and folder (usually `/root` or `/docs`).</li>
+                                <li>If using a custom domain (e.g., a subdomain of `drhscit.org`), configure it here and set up the necessary CNAME/A records with School IT.</li>
+                            </ul>
+                        </li>
+                        <li>Verify the documentation site is accessible and up-to-date.</li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -93,9 +199,11 @@
 
     <footer class="bg-gray-800 text-white py-6">
         <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2025 CIT Documentation Team. All rights reserved.</p>
+            <p>&copy; <span id="year"></span> CIT Documentation Team. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
-
 </html>
