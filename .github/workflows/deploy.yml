@@ -3,26 +3,19 @@ name: Deploy to Windows Server
 on:
   push:
     branches:
-      - main  # Or whatever your deployment branch is
+      - main
 
 jobs:
   deploy:
     runs-on: self-hosted
-
     steps:
-      # Step 1: Checkout the repository from GitHub
-      - name: Checkout code
+      - name: Mark project folder as safe
+        run: git config --global --add safe.directory "C:/Projects/CIT-Windows-Server-Documentation"
+
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Clean destination folder
+      - name: Deploy to local folder
         run: |
-          # Remove all files except the .git directory
-          Get-ChildItem -Path "C:\Projects\CIT-Windows-Server-Documentation" -Recurse | 
-            Where-Object { $_.FullName -notmatch '\.git' } | 
-            Remove-Item -Force
-
-
-      # Step 3: Copy the files to the desired destination folder
-      - name: Copy files to C:\Projects
-        run: |
-          robocopy C:\actions-runner\_work\CIT-Windows-Server-Documentation\CIT-Windows-Server-Documentation C:\Projects\CIT-Windows-Server-Documentation /MIR
+          cd C:\Projects\CIT-Windows-Server-Documentation
+          git pull origin main
