@@ -14,9 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Clean the target folder before copying (ensure no leftover files)
       - name: Clean destination folder
-        run: Remove-Item -Recurse -Force "C:\Projects\CIT-Windows-Server-Documentation\*" 
+        run: |
+          # Remove all files except the .git directory
+          Get-ChildItem -Path "C:\Projects\CIT-Windows-Server-Documentation" -Recurse | 
+            Where-Object { $_.FullName -notmatch '\.git' } | 
+            Remove-Item -Force
+
 
       # Step 3: Copy the files to the desired destination folder
       - name: Copy files to C:\Projects
