@@ -3,9 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Server Setup Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Optional:  If you want to ensure the content takes up minimum height of the screen */
+        .container {
+            min-height: 80vh; /* At least 80% of the viewport height */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align items to the start (top in this case) */
+            padding-top: 2.5rem; /* py-10 equivalent */
+            padding-bottom: 2.5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            margin-left: auto;
+            margin-right: auto;
+
+        }
+    </style>
 </head>
-<body>
-    
+<body class="bg-gray-100 dark:bg-gray-900">
+    <div class="container">
+        <h1 class="text-3xl font-semibold text-gray-800 dark:text-white mb-6">Server Setup Guide</h1>
+        <p class="text-gray-600 dark:text-gray-300 mb-8">
+            This guide outlines the steps that we took to setup the server.  It's organized in the order we had done it.
+        </p>
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <section class="mb-8">
+                <h2 class="text-2xl font-semibold text-blue-600 dark:text-blue-400 mb-4">Step 1: Getting the OS set up</h2>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                    <li><span class="font-semibold">Initial Setup:</span>
+                        <ul class="list-disc list-inside ml-5 space-y-1">
+                            <li>Downloaded the iso file and formatted it onto a usb to install it onto the server hardware.</li>
+                            <li>Ran into a problem with the wrong formatting on the drive and had to research more about the hardware.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+        </div>
+        
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-green-600 dark:text-green-400 mb-4">Step 2: System Configuration</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Date:</span> [Date of system configuration]</li>
+                <li><span class="font-semibold">Actions:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>Installed essential utilities: <code class="inline-block bg-gray-200 dark:bg-gray-800 text-sm rounded px-1">sudo apt install -y vim curl git</code> (or equivalent).</li>
+                        <li>Configured the timezone: <code class="inline-block bg-gray-200 dark:bg-gray-800 text-sm rounded px-1">sudo timedatectl set-timezone [Your Timezone]</code>.</li>
+                        <li>Allocated a static IP.</li>
+
+                    </ul>
+                </li>
+            </ol>
+        </section>
+        </div>
+        
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-purple-600 dark:text-purple-400 mb-4">Step 3:  Application Setup</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Details:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>Installed OpenSSH for remote SSH access.</li>
+                        <li>Generated and added an SSH key for secure access.</li>
+                        <li>Set up the application files (cloned from Git, copied, etc.).  Specify the location.</li>
+                        <li>Installed application dependencies (e.g., <code class="inline-block bg-gray-200 dark:bg-gray-800 text-sm rounded px-1">npm install</code>, <code class="inline-block bg-gray-200 dark:bg-gray-800 text-sm rounded px-1">pip install -r requirements.txt</code>).</li>
+                        <li>Configured environment variables (if any).</li>
+                        <li>Set up a process manager (e.g., systemd, pm2) to keep the application running.
+                           <ul class="list-disc list-inside ml-5 space-y-1">
+                           </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+        </div>
+        
+        
+            
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-yellow-600 dark:text-yellow-400 mb-4">Step 4: Database Setup (if applicable)</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Date:</span> [Date of database setup]</li>
+                <li><span class="font-semibold">Database System:</span> [e.g., PostgreSQL 14, MySQL 8.0, MongoDB 5.0]</li>
+                <li><span class="font-semibold">Installation:</span>  Include specific commands or installation method.</li>
+                <li><span class="font-semibold">Configuration:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>Created a database and user for the application.</li>
+                        <li>Configured database authentication.</li>
+                        <li>(Optional) настроен remote access.</li>
+                        <li>(Optional) настроен connection security (e.g., SSL).</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-red-600 dark:text-red-400 mb-4">Step 5:  Web Server Setup (if applicable)</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Date:</span> [Date of web server setup]</li>
+                <li><span class="font-semibold">Web Server:</span> [e.g., Nginx, Apache]</li>
+                <li><span class="font-semibold">Installation:</span> Include specific commands.</li>
+                <li><span class="font-semibold">Configuration:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>Configured a virtual host/server block for the application.</li>
+                        <li>Set the document root.</li>
+                        <li>Configured правильное proxying (if needed).</li>
+                        <li>Enabled HTTPS (SSL/TLS) with сертификаты from [e.g., Let's Encrypt].</li>
+                        <li>Configured logging.</li>
+                    </ul>
+                </li>
+            </ol>
+            </section>
+        </div>
+        
+
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-teal-600 dark:text-teal-400 mb-4">Step 6:  Deployment and Testing</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Date:</span> [Date of deployment]</li>
+                <li><span class="font-semibold">Deployment Method:</span> [e.g., Git pull, rsync, CI/CD pipeline]</li>
+                <li><span class="font-semibold">Testing:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li>Performed basic functional testing.</li>
+                        <li>Tested database connectivity.</li>
+                        <li>Checked правильное routing and обращение to assets.</li>
+                        <li>(Optional) Performed load testing.</li>
+                        <li>(Optional) Checked logs for errors.</li>
+                    </ul>
+                </li>
+                <li><span class="font-semibold">Initial Deployment URL:</span> [The URL of the deployed application]</li>
+            </ol>
+        </section>
+         <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-pink-600 dark:text-pink-400 mb-4">Step 7:  Ongoing Maintenance</h2>
+            <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-200">
+                <li><span class="font-semibold">Date:</span> [Date of last update]</li>
+                <li><span class="font-semibold">Maintenance Procedures:</span>
+                    <ul class="list-disc list-inside ml-5 space-y-1">
+                        <li> регулярные security updates of the underlying OS and installed packages.</li>
+                        <li> регулярные backups of the application data and database.</li>
+                        <li>Monitoring of server resources (CPU, memory, disk space).</li>
+                        <li>Log rotation and archiving.</li>
+                        <li>Application performance monitoring.</li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+    </div>
 </body>
 </html>
