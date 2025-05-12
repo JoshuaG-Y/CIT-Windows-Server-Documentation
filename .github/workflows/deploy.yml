@@ -13,12 +13,13 @@ jobs:
         shell: powershell
         run: |
           $sshPath = "C:\Users\Administrator\.ssh"
-          if (Test-Path $sshPath) {
-              icacls $sshPath /grant Administrator:F /T
-          } else {
-              Write-Host "$sshPath does not exist. Please check the path."
+          try {
+              # Grant permissions to NETWORK SERVICE
+              icacls $sshPath /grant "NETWORK SERVICE:F" /T
+              Write-Host "Permissions granted to NETWORK SERVICE for $sshPath."
+          } catch {
+              Write-Error "Failed to grant permissions to NETWORK SERVICE for $sshPath. Ensure the runner has access."
           }
-
       - name: Configure SSH and deploy
         shell: powershell
         run: |
