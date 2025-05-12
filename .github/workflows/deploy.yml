@@ -18,6 +18,14 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # Ensure permissions are set on the folder and .git directory
+      - name: Fix folder and .git folder permissions
+        run: |
+          takeown /F "C:\Projects\CIT-Windows-Server-Documentation" /R /D Y
+          icacls "C:\Projects\CIT-Windows-Server-Documentation" /T /grant "NETWORK SERVICE":(F)
+          takeown /F "C:\Projects\CIT-Windows-Server-Documentation\.git" /R /D Y
+          icacls "C:\Projects\CIT-Windows-Server-Documentation\.git" /T /grant "NETWORK SERVICE":(F)
+
       # Clean destination folder and reinitialize
       - name: Clean destination folder
         run: |
