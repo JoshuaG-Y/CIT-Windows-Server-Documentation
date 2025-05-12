@@ -10,25 +10,29 @@ jobs:
       - name: Clean and clone repo
         shell: powershell
         run: |
-          # Ensure SSH is working correctly
-          Write-Host "Testing SSH connection to GitHub..."
+          # Use existing SSH key for Git
+          git config --global core.sshCommand "ssh -i ~/.ssh/id_ed25519 -F /dev/null"
+      
+          # Test SSH connection (will warn if not authorized, but that's fine for test)
           ssh -T git@github.com -o StrictHostKeyChecking=no
-          
-          # Check if directory exists
+      
+          # Fix folder permissions so runner can access
+          if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation") {
+            takeown /F "C:\Projects\CIT-Windows-Server-Documentation" /R /D Y
+            icacls "C:\Projects\CIT-Windows-Server-Documentation" /T /grant "NETWORK SERVICE":(F)
+          }
+      
+          # Pull or clone
           if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation\.git") {
-            # Repository exists, pull updates
             Set-Location -Path "C:\Projects\CIT-Windows-Server-Documentation"
             git pull origin main
           } else {
-            # Repository doesn't exist, clone it
             if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation") {
-              # Clean up existing directory if it's not a git repo
               Remove-Item -Path "C:\Projects\CIT-Windows-Server-Documentation\*" -Recurse -Force
             } else {
               New-Item -ItemType Directory -Path "C:\Projects\CIT-Windows-Server-Documentation" -Force
             }
-            
-            # Clone using SSH
+      
             Set-Location -Path "C:\Projects"
             git clone git@github.com:Antigro09/CIT-Windows-Server-Documentation.git
           }
