@@ -17,6 +17,7 @@ jobs:
               icacls $sshPath /grant Administrator:F /T
           } else {
               Write-Host "$sshPath does not exist. Please check the path."
+          }
 
       - name: Configure SSH and deploy
         shell: powershell
