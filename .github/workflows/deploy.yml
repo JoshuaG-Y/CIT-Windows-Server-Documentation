@@ -16,17 +16,6 @@ jobs:
           git config --global core.sshCommand "ssh -i C:/Windows/ServiceProfiles/NetworkService/.ssh/id_ed25519 -o StrictHostKeyChecking=no"
           git config --global --add safe.directory "C:/Projects/CIT-Windows-Server-Documentation"
 
-          # Add GitHub to known hosts if needed
-          if (!(Test-Path "C:\Windows\ServiceProfiles\NetworkService\.ssh\known_hosts")) {
-            ssh-keyscan github.com >> C:\Windows\ServiceProfiles\NetworkService\.ssh\known_hosts
-          }
-
-          # Set permissions so runner can access the folder
-          if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation") {
-            takeown /F "C:\Projects\CIT-Windows-Server-Documentation" /R /D Y
-            icacls "C:\Projects\CIT-Windows-Server-Documentation" /T /grant "NETWORK SERVICE":F
-          }
-
           # Pull if repo exists, clone if not
           if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation\.git") {
             Set-Location -Path "C:\Projects\CIT-Windows-Server-Documentation"
