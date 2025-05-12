@@ -8,28 +8,14 @@ on:
 jobs:
   deploy:
     runs-on: self-hosted
-
     steps:
-      # Mark the project folder as safe
       - name: Mark project folder as safe
         run: git config --global --add safe.directory "C:/Projects/CIT-Windows-Server-Documentation"
 
-      # Checkout the repository code
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Ensure permissions are set on the folder and .git directory
-      - name: Fix folder and .git folder permissions
+      - name: Deploy to local folder
         run: |
-          takeown /F "C:\Projects\CIT-Windows-Server-Documentation" /R /D Y
-          icacls "C:\Projects\CIT-Windows-Server-Documentation" /T /grant "NETWORK SERVICE":(F)
-          takeown /F "C:\Projects\CIT-Windows-Server-Documentation\.git" /R /D Y
-          icacls "C:\Projects\CIT-Windows-Server-Documentation\.git" /T /grant "NETWORK SERVICE":(F)
-
-      # Clean destination folder and reinitialize
-      - name: Clean destination folder
-        run: |
-          Remove-Item -Recurse -Force "C:\Projects\CIT-Windows-Server-Documentation\*" 
-          git init
-          git remote add origin https://github.com/Antigro09/CIT-Windows-Server-Documentation.git
-          git pull origin main
+          cd C:\Projects\CIT-Windows-Server-Documentation
+          git pull
