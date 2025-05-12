@@ -7,16 +7,11 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Mark project folder as safe
-        run: git config --global --add safe.directory "C:/Projects/CIT-Windows-Server-Documentation"
-      - name: Checkout repo
-        uses: actions/checkout@v3
-      - name: Deploy to local folder
+      - name: Clean and clone repo
         run: |
-          # Try to make sure the directory exists and is writable
-          mkdir -p C:\Projects\CIT-Windows-Server-Documentation 2>nul
-          attrib -r C:\Projects\CIT-Windows-Server-Documentation\* /s /d
-          cd C:\Projects\CIT-Windows-Server-Documentation
-          # Use force option to overwrite local changes
-          git fetch origin main
-          git reset --hard origin/main
+          # Remove old directory if it exists (force removal)
+          if exist "C:\Projects\CIT-Windows-Server-Documentation" (
+            rmdir /s /q "C:\Projects\CIT-Windows-Server-Documentation"
+          )
+          # Clone fresh copy
+          git clone https://github.com/Antigro09/CIT-Windows-Server-Documentation.git "C:\Projects\CIT-Windows-Server-Documentation"
