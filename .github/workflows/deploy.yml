@@ -9,6 +9,15 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
+      - name: Fix permissions for SSH directory
+        shell: powershell
+        run: |
+          $sshPath = "C:\Users\Administrator\.ssh"
+          if (Test-Path $sshPath) {
+              icacls $sshPath /grant Administrator:F /T
+          } else {
+              Write-Host "$sshPath does not exist. Please check the path."
+
       - name: Configure SSH and deploy
         shell: powershell
         run: |
