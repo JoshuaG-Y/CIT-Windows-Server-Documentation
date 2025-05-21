@@ -1,0 +1,32 @@
+name: Deploy to Windows Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Fix permissions for SSH directory
+        shell: powershell
+        run: |
+          $sshPath = "C:\Users\Administrator\.ssh"
+          try {
+              # Grant permissions to NETWORK SERVICE
+              icacls $sshPath /grant "NETWORK SERVICE:F" /T
+              Write-Host "Permissions granted to NETWORK SERVICE for $sshPath."
+          } catch {
+              Write-Error "Failed to grant permissions to NETWORK SERVICE for $sshPath. Ensure the runner has access."
+          }
+      - name: Configure SSH and deploy
+        shell: powershell
+        run: |
+          # Pull if repo exists, clone if not
+          if (Test-Path "C:\Projects\CIT-Windows-Server-Documentation\.git") {
+            Set-Location -Path "C:\Projects\CIT-Windows-Server-Documentation"
+            git pull origin main
+          } else {
+            git clone git@github.com:Antigro09/CIT-Windows-Server-Documentation.git C:\Projects\CIT-Windows-Server-Documentation
+          }
